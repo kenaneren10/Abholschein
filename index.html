@@ -26,7 +26,7 @@
         .text-10 { font-size: 10pt; line-height: 1.2; font-weight: normal; }
         .text-12 { font-size: 12pt; line-height: 1.2; font-weight: normal; }
 
-        /* ZONE 1: HEADER (Oberkante 12mm, Barcode-Höhe 13mm) */
+        /* ZONE 1: HEADER (Unverändert) */
         .header-left-block {
             position: absolute;
             top: 12mm;
@@ -52,7 +52,7 @@
             height: 10mm; 
         }
 
-        /* ADRESS-SECTION (Start bei 43mm) */
+        /* ADRESS-SECTION (Unverändert) */
         .address-section {
             position: absolute;
             top: 43mm; 
@@ -93,7 +93,7 @@
 
         .section-label { font-weight: bold; display: block; margin-bottom: 2mm; }
 
-        /* ZONE 2: TABELLEN */
+        /* ZONE 2: TABELLEN (Unverändert) */
         .matrix-container {
             position: absolute;
             top: 122mm; 
@@ -132,7 +132,6 @@
             font-size: 8pt;
         }
 
-        /* Dritte Tabelle: Header Warenzeile */
         .matrix-table-third {
             width: 190mm;
             border-collapse: collapse;
@@ -151,7 +150,6 @@
             white-space: nowrap;
         }
 
-        /* Vierte Tabelle: Waren-Daten (1,4 cm hoch) */
         .matrix-table-fourth {
             width: 190mm;
             border-collapse: collapse;
@@ -183,41 +181,32 @@
         }
         .inner-label { font-weight: bold; width: 30mm; display: inline-block; }
 
-        /* --- NEU FÜR ZONE 3 --- */
-        .z3-text {
-            margin-top: 5mm; /* 0.5cm Abstand */
+        /* ZONE 3: BESTÄTIGUNG (NEU - Höhen auf 1.9cm angepasst) */
+        .confirmation-label {
+            margin-top: 5mm; 
             font-size: 8pt;
             margin-bottom: 2mm;
         }
-        .z3-table {
+
+        .confirmation-table {
             width: 190mm;
             border-collapse: collapse;
             table-layout: fixed;
             border: 0.5pt solid black;
         }
-        .z3-table td {
+
+        .confirmation-table td {
             border: 0.5pt solid black;
-            height: 13mm; /* Exakt 1.3cm hoch */
+            height: 19mm; /* Exakt 1,9 cm hoch */
             padding: 1mm 1.5mm;
             vertical-align: top;
             font-size: 8pt;
         }
-        .z3-visum-table {
-            width: 95mm; /* Nur eine Spalte breit */
-            border-collapse: collapse;
-            table-layout: fixed;
-            border: 0.5pt solid black;
-            border-top: none;
-        }
-        .z3-visum-table td {
-            height: 13mm;
-            padding: 1mm 1.5mm;
-            vertical-align: top;
-            font-size: 8pt;
-        }
-        .z3-line {
-            margin-top: 4mm;
+
+        .line-placeholder {
+            margin-top: 8mm; /* Platz für die Linie im hohen Feld */
             text-align: center;
+            font-weight: normal;
         }
 
         @media print {
@@ -258,34 +247,21 @@
         <div class="address-section">
             <div class="auftraggeber-block text-10">
                 <span class="section-label">Auftraggeber</span>
-                F. Hoffmann-La Roche AG<br>
-                Yard Basel<br>
-                : 092 / O2732.01<br>
-                Grenzacherstrasse 124<br>
-                4070 Basel<br>
-                Schweiz
+                F. Hoffmann-La Roche AG<br>Yard Basel<br>: 092 / O2732.01<br>Grenzacherstrasse 124<br>4070 Basel<br>Schweiz
 
                 <table class="contact-table text-10">
                     <tr><td class="label-col">Kontakt</td><td class="value-col">Véronique Escalin</td></tr>
                     <tr><td class="label-col">Telefon</td><td class="value-col">+41 (61) 687 27 66</td></tr>
                     <tr><td class="label-col">E-Mail</td><td class="value-col">veronique.escalin@roche.com</td></tr>
-                    <tr class="datum-row">
-                        <td class="label-col">Datum</td>
-                        <td class="value-col">30.03.2026</td>
-                    </tr>
+                    <tr class="datum-row"><td class="label-col">Datum</td><td class="value-col">30.03.2026</td></tr>
                 </table>
 
-                <div class="freight-unit-text text-10">
-                    Die Abholung beinhaltet folgende Lieferungen / Freight Units:
-                </div>
+                <div class="freight-unit-text text-10">Die Abholung beinhaltet folgende Lieferungen / Freight Units:</div>
             </div>
 
             <div class="spediteur-block text-10">
                 <span class="section-label">Spediteur</span>
-                Solvias AG<br>
-                Römerpark 2<br>
-                4303 Kaiseraugst<br>
-                Schweiz
+                Solvias AG<br>Römerpark 2<br>4303 Kaiseraugst<br>Schweiz
 
                 <table class="contact-table text-10">
                     <tr><td class="label-col">Kontakt</td><td class="value-col">Dino Iannucci</td></tr>
@@ -307,19 +283,8 @@
 
             <table class="matrix-table-second">
                 <tr>
-                    <td style="width: 45mm;">
-                        <span class="m-label">Abholadresse</span>
-                        F. Hoffmann-La Roche Ltd<br>
-                        Site Logistics<br>
-                        Grenzacherstrasse 124<br>
-                        4070 Basel, Schweiz
-                    </td>
-                    <td style="width: 45mm;">
-                        <span class="m-label">Warenempfänger</span>
-                        Solvias AG<br>
-                        Römerpark 2<br>
-                        4303 Kaiseraugst, Schweiz
-                    </td>
+                    <td style="width: 45mm;"><span class="m-label">Abholadresse</span>F. Hoffmann-La Roche Ltd<br>Site Logistics<br>Grenzacherstrasse 124<br>4070 Basel, Schweiz</td>
+                    <td style="width: 45mm;"><span class="m-label">Warenempfänger</span>Solvias AG<br>Römerpark 2<br>4303 Kaiseraugst, Schweiz</td>
                     <td style="width: 100mm;">
                         <table class="inner-list-table">
                             <tr><td><span class="inner-label">Zur Weiterleitung</span> Kurier</td></tr>
@@ -345,22 +310,18 @@
                 <tr>
                     <td style="width: 35mm;">376401357901165903</td>
                     <td style="width: 40mm;">Temperaturgeführte Verpackung</td>
-                    <td style="width: 93mm;">
-                        Solvias 33521<br>
-                        1 Bag mit 1 Tube<br>
-                        Inhalt:<br>
-                        Batch: STF25-2603ET01_M3-2
-                    </td>
+                    <td style="width: 93mm;">Solvias 33521<br>1 Bag mit 1 Tube<br>Inhalt:<br>Batch: STF25-2603ET01_M3-2</td>
                     <td style="width: 22mm; text-align: right;">14.000 kg</td>
                 </tr>
             </table>
-            <div class="z3-text">Übernahme bestätigt:</div>
+
+            <div class="confirmation-label">Übernahme bestätigt:</div>
             
-            <table class="z3-table">
+            <table class="confirmation-table">
                 <tr>
                     <td style="width: 95mm;">
                         Übernahme am (Datum DD.MM.YYYY und Uhrzeit HH:MM)
-                        <div class="z3-line">____ . ____ . ________ &nbsp; / &nbsp; ____ : ____</div>
+                        <div class="line-placeholder">____ . ____ . ________ &nbsp; / &nbsp; ____ : ____</div>
                     </td>
                     <td style="width: 95mm;">Polizeiliches Kennzeichen (Verladeeinheit)</td>
                 </tr>
@@ -370,7 +331,7 @@
                 </tr>
             </table>
 
-            <table class="z3-visum-table">
+            <table class="confirmation-table" style="width: 95mm; border-top: none;">
                 <tr>
                     <td>Visum des Roche-Mitarbeiters</td>
                 </tr>
