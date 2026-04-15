@@ -26,7 +26,7 @@
         .text-10 { font-size: 10pt; line-height: 1.2; font-weight: normal; }
         .text-12 { font-size: 12pt; line-height: 1.2; font-weight: normal; }
 
-        /* ZONE 1: HEADER (Oberkante 12mm, Barcode-Höhe 13mm) */
+        /* ZONE 1: HEADER */
         .header-left-block {
             position: absolute;
             top: 12mm;
@@ -52,7 +52,7 @@
             height: 10mm; 
         }
 
-        /* ADRESS-SECTION (Start bei 43mm) */
+        /* ADRESS-SECTION */
         .address-section {
             position: absolute;
             top: 43mm; 
@@ -132,7 +132,6 @@
             font-size: 8pt;
         }
 
-        /* Dritte Tabelle: Header Warenzeile */
         .matrix-table-third {
             width: 190mm;
             border-collapse: collapse;
@@ -151,7 +150,6 @@
             white-space: nowrap;
         }
 
-        /* Vierte Tabelle: Waren-Daten (1,4 cm hoch) */
         .matrix-table-fourth {
             width: 190mm;
             border-collapse: collapse;
@@ -191,24 +189,8 @@
             font-size: 8pt;
         }
 
-        .line-placeholder {
-            margin-top: 4mm;
-            text-align: center;
-            font-weight: normal;
-        }
-
         .m-label { font-weight: bold; font-size: 8pt; display: block; margin-bottom: 1mm; }
-
-        .inner-list-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .inner-list-table td {
-            border: none !important;
-            height: auto !important;
-            padding: 0.2mm 0 !important;
-            font-size: 7.5pt !important;
-        }
+        .inner-list-table td { border: none !important; padding: 0.2mm 0 !important; font-size: 7.5pt !important; }
         .inner-label { font-weight: bold; width: 30mm; display: inline-block; }
 
         @media print {
@@ -352,7 +334,7 @@
                 <tr>
                     <td style="width: 95mm;">
                         Übernahme am (Datum DD.MM.YYYY und Uhrzeit HH:MM)
-                        <div class="line-placeholder">____ . ____ . ________ &nbsp; / &nbsp; ____ : ____</div>
+                        <div style="margin-top: 4mm; text-align: center;">____ . ____ . ________ &nbsp; / &nbsp; ____ : ____</div>
                     </td>
                     <td style="width: 95mm;">Polizeiliches Kennzeichen (Verladeeinheit)</td>
                 </tr>
