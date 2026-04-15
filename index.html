@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* PDF BASIS-KONFIGURATION */
         * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; }
         
         body {
@@ -20,46 +19,41 @@
             margin: 10mm auto;
             position: relative;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            padding: 0;
         }
 
-        /* SCHRIFTEN - Arial 12/10, "dünn" */
         .text-10 { font-size: 10pt; line-height: 1.2; font-weight: normal; }
         .text-12 { font-size: 12pt; line-height: 1.2; font-weight: normal; }
 
-        /* ZONE 1: HEADER (Oberkante Barcode bei 12mm) */
-        
+        /* HEADER (Start bei 12mm) */
         .header-left-block {
             position: absolute;
-            top: 12mm; /* Startet auf der gleichen Höhe wie der Barcode */
+            top: 12mm;
             left: 15mm;
             width: 70mm;
         }
 
-        /* Barcode: 13mm hoch, Oberkante 12mm */
         .barcode-area {
             position: absolute;
             top: 12mm;
-            left: 82mm; /* 8,2 cm von links */
-            height: 13mm; /* 1,3 cm hoch */
+            left: 82mm; 
+            height: 13mm; 
             width: 60mm;
         }
 
         .barcode-svg { width: 100%; height: 100%; }
 
-        /* Roche Logo: 10mm hoch, Oberkante ebenfalls bei 12mm */
         .roche-logo-pos {
             position: absolute;
             top: 12mm;
-            right: 5mm; /* 0,5 cm von rechts */
-            width: 20mm; /* 2 cm lang */
-            height: 10mm; /* 1 cm hoch */
+            right: 5mm; 
+            width: 20mm; 
+            height: 10mm;
         }
 
-        /* ADRESS-SECTION: Startet exakt 8,2 cm (82mm) von oben */
+        /* ADRESS-SECTION (Start bei 43mm = 12mm Top + 13mm Barcode + 18mm Lücke) */
         .address-section {
             position: absolute;
-            top: 82mm; 
+            top: 43mm; 
             left: 0;
             width: 100%;
         }
@@ -72,13 +66,13 @@
 
         .spediteur-block {
             position: absolute;
-            left: 108mm; /* 10,8 cm von links */
+            left: 108mm; 
             width: 85mm;
         }
 
         .contact-table {
             border-collapse: collapse;
-            margin-top: 10mm; /* 1,0 cm Abstand nach "Schweiz" */
+            margin-top: 10mm; 
             width: 100%;
         }
 
@@ -86,7 +80,6 @@
         .label-col { width: 25mm; } 
         .value-col { width: 70mm; }
 
-        /* Abstand Email zu Datum: 0,5 cm */
         .datum-row td { padding-top: 5mm; }
 
         .section-label { font-weight: bold; display: block; margin-bottom: 2mm; }
@@ -99,9 +92,7 @@
     </style>
 </head>
 <body>
-
     <div class="a4-page">
-        
         <div class="header-left-block">
             <div class="text-12">Abholschein 1100008922</div>
             <div class="text-12">Transport Unit</div>
@@ -110,31 +101,27 @@
 
         <div class="barcode-area">
             <svg class="barcode-svg" preserveAspectRatio="none" viewBox="0 0 100 20">
-                <rect x="0" width="1.2" height="20" fill="black"/>
-                <rect x="3" width="0.6" height="20" fill="black"/>
-                <rect x="5" width="2.2" height="20" fill="black"/>
-                <rect x="11" width="1.2" height="20" fill="black"/>
-                <rect x="15" width="0.6" height="20" fill="black"/>
-                <rect x="19" width="2.2" height="20" fill="black"/>
-                <rect x="26" width="1.6" height="20" fill="black"/>
-                <rect x="31" width="1.2" height="20" fill="black"/>
-                <rect x="41" width="2.2" height="20" fill="black"/>
-                <rect x="46" width="0.6" height="20" fill="black"/>
-                <rect x="53" width="2.2" height="20" fill="black"/>
-                <rect x="61" width="1.2" height="20" fill="black"/>
-                <rect x="69" width="2.2" height="20" fill="black"/>
-                <rect x="76" width="0.6" height="20" fill="black"/>
-                <rect x="83" width="1.6" height="20" fill="black"/>
-                <rect x="91" width="2.2" height="20" fill="black"/>
-                <rect x="96" width="1.2" height="20" fill="black"/>
+                <rect x="0" width="1.5" height="20" fill="black"/>
+                <rect x="3" width="0.8" height="20" fill="black"/>
+                <rect x="5" width="2.5" height="20" fill="black"/>
+                <rect x="12" width="1.5" height="20" fill="black"/>
+                <rect x="16" width="0.8" height="20" fill="black"/>
+                <rect x="22" width="2.5" height="20" fill="black"/>
+                <rect x="30" width="1.5" height="20" fill="black"/>
+                <rect x="35" width="2.5" height="20" fill="black"/>
+                <rect x="42" width="0.8" height="20" fill="black"/>
+                <rect x="48" width="2.5" height="20" fill="black"/>
+                <rect x="55" width="1.5" height="20" fill="black"/>
+                <rect x="62" width="2.5" height="20" fill="black"/>
+                <rect x="70" width="0.8" height="20" fill="black"/>
+                <rect x="78" width="1.5" height="20" fill="black"/>
+                <rect x="85" width="2.5" height="20" fill="black"/>
+                <rect x="95" width="1.5" height="20" fill="black"/>
             </svg>
         </div>
 
         <div class="roche-logo-pos">
-            <svg width="20mm" height="10mm" viewBox="0 0 100 52">
-                <polygon points="25,2 75,2 98,26 75,50 25,50 2,26" fill="none" stroke="#0066CC" stroke-width="3"/>
-                <text x="50" y="34" font-family="Arial" font-weight="bold" font-size="20" fill="#0066CC" text-anchor="middle">Roche</text>
-            </svg>
+            <div style="width: 100%; height: 100%; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; font-size: 6pt;">LOGO</div>
         </div>
 
         <div class="address-section">
