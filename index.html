@@ -23,16 +23,16 @@
             padding: 0;
         }
 
-        /* SCHRIFTEN - Wie gewünscht: Arial 12/10, nicht fett */
+        /* SCHRIFTEN - Arial 12/10, wie gewünscht "dünn" (normal) */
         .text-10 { 
             font-size: 10pt; 
-            line-height: 1.1; 
+            line-height: 1.2; /* Normaler Zeilenabstand wie bei der Adresse */
             font-weight: normal; 
         }
         .text-12 { 
             font-size: 12pt; 
-            line-height: 1.1; 
-            font-weight: normal; /* "Dünne" Schrift statt fett */
+            line-height: 1.2; 
+            font-weight: normal; 
         }
 
         /* ZONE 1: HEADER (Oben) */
@@ -40,17 +40,37 @@
             position: absolute;
             top: 15mm;
             left: 15mm;
-            width: 70mm; /* Breite des Textblocks links */
+            width: 70mm;
         }
 
-        .barcode-pos {
+        /* Barcode: Startet bei 8,2 cm von links, Höhe 18mm */
+        .barcode-area {
             position: absolute;
             top: 15mm;
-            left: 82mm; /* EXAKT 8,2 cm vom linken Rand */
+            left: 82mm; 
             height: 18mm;
-            width: 55mm; /* Platz für den Barcode */
-            background: #000;
+            width: 60mm;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        .barcode-lines {
+            width: 100%;
+            height: 15mm;
+            background: repeating-linear-gradient(
+                90deg,
+                #000,
+                #000 1px,
+                #fff 1px,
+                #fff 3px,
+                #000 3px,
+                #000 4px,
+                #fff 4px,
+                #fff 5px
+            );
+        }
+        .barcode-label { font-size: 7pt; margin-top: 1mm; }
 
         .roche-logo-pos {
             position: absolute;
@@ -58,7 +78,7 @@
             right: 15mm;
         }
 
-        /* ZONE 1: ADRESSEN (Vertikaler Abstand 8,2 cm von oben) */
+        /* ZONE 1: ADRESSEN (Start 8,2 cm von oben) */
         .address-section {
             position: absolute;
             top: 82mm; 
@@ -74,26 +94,37 @@
 
         .spediteur-block {
             position: absolute;
-            left: 108mm; /* 10,8 cm von links */
+            left: 108mm; /* Fixer Abstand 10,8 cm von links */
             width: 85mm;
         }
 
         /* KONTAKT-TABELLEN */
         .contact-table {
             border-collapse: collapse;
-            margin-top: 6mm;
+            margin-top: 10mm; /* Exakt 1,0 cm Abstand nach "Schweiz" */
             width: 100%;
         }
 
         .contact-table td {
-            padding-bottom: 5mm; /* 0,5 cm vertikaler Abstand */
+            padding: 0; /* Entfernt künstliche Abstände */
             vertical-align: top;
+            line-height: 1.2; /* Gleicher Zeilenabstand wie oben */
         }
 
-        .label-col { width: 25mm; }
-        .value-col { width: 70mm; }
+        .label-col { width: 25mm; } /* 2,5 cm Spalte */
+        .value-col { width: 70mm; } /* 7,0 cm Spalte */
 
-        .section-label { font-weight: bold; display: block; margin-bottom: 1mm; }
+        .section-label { font-weight: bold; display: block; margin-bottom: 2mm; }
+
+        /* Vertikale ID links */
+        .vertical-id {
+            position: absolute;
+            left: 5mm;
+            bottom: 50mm;
+            transform: rotate(-90deg);
+            transform-origin: left bottom;
+            font-size: 8pt;
+        }
 
         @media print {
             body { background: white; }
@@ -106,18 +137,23 @@
 
     <div class="a4-page">
         
+        <div class="vertical-id">7640135792048TEC0165142V1</div>
+
         <div class="header-left-block">
             <div class="text-12">Abholschein 1100008922</div>
             <div class="text-12">Transport Unit</div>
             <div class="text-10" style="margin-top: 1mm;">(Version 3.0)</div>
         </div>
 
-        <div class="barcode-pos"></div>
+        <div class="barcode-area">
+            <div class="barcode-lines"></div>
+            <div class="barcode-label">1100008922</div>
+        </div>
 
         <div class="roche-logo-pos">
-            <svg width="30mm" viewBox="0 0 100 50">
-                <path d="M10,25 L30,5 L70,5 L90,25 L70,45 L30,45 Z" fill="none" stroke="#0066cc" stroke-width="2"/>
-                <text x="50" y="32" font-family="Arial" font-size="16" fill="#0066cc" text-anchor="middle" font-weight="bold">Roche</text>
+            <svg width="32mm" height="16mm" viewBox="0 0 100 52">
+                <polygon points="25,2 75,2 98,26 75,50 25,50 2,26" fill="none" stroke="#0066CC" stroke-width="2.5"/>
+                <text x="50" y="34" font-family="Arial" font-weight="bold" font-size="19" fill="#0066CC" text-anchor="middle">Roche</text>
             </svg>
         </div>
 
@@ -136,7 +172,7 @@
                     <tr><td class="label-col">Kontakt</td><td class="value-col">Véronique Escalin</td></tr>
                     <tr><td class="label-col">Telefon</td><td class="value-col">+41 (61) 687 27 66</td></tr>
                     <tr><td class="label-col">E-Mail</td><td class="value-col">veronique.escalin@roche.com</td></tr>
-                    <tr><td class="label-col">Datum</td><td class="value-col">30.03.2026</td></tr>
+                    <tr style="height: 10mm;"><td colspan="2"></td></tr> <tr><td class="label-col">Datum</td><td class="value-col">30.03.2026</td></tr>
                 </table>
             </div>
 
@@ -147,7 +183,7 @@
                 4303 Kaiseraugst<br>
                 Schweiz
 
-                <table class="contact-table text-10" style="margin-top: 13.5mm;">
+                <table class="contact-table text-10">
                     <tr><td class="label-col">Kontakt</td><td class="value-col">Dino Iannucci</td></tr>
                     <tr><td class="label-col">Telefon</td><td class="value-col">+41618456214</td></tr>
                     <tr><td class="label-col">E-Mail</td><td class="value-col">dino.iannucci@solvias.com</td></tr>
@@ -155,8 +191,6 @@
             </div>
 
         </div>
-
     </div>
-
 </body>
 </html>
