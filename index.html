@@ -26,7 +26,7 @@
         .text-10 { font-size: 10pt; line-height: 1.2; font-weight: normal; }
         .text-12 { font-size: 12pt; line-height: 1.2; font-weight: normal; }
 
-        /* ZONE 1: HEADER */
+        /* ZONE 1: HEADER (Oberkante 12mm, Barcode-Höhe 13mm) */
         .header-left-block {
             position: absolute;
             top: 12mm;
@@ -52,7 +52,7 @@
             height: 10mm; 
         }
 
-        /* ADRESS-SECTION */
+        /* ADRESS-SECTION (Start bei 43mm) */
         .address-section {
             position: absolute;
             top: 43mm; 
@@ -183,14 +183,30 @@
 
         .confirmation-table td {
             border: 0.5pt solid black;
-            height: 13mm; /* 1,3 cm hoch */
+            height: 13mm; /* Exakt 1,3 cm hoch */
             padding: 1mm 1.5mm;
             vertical-align: top;
             font-size: 8pt;
         }
 
+        .line-placeholder {
+            margin-top: 4mm;
+            text-align: center;
+            font-weight: normal;
+        }
+
         .m-label { font-weight: bold; font-size: 8pt; display: block; margin-bottom: 1mm; }
-        .inner-list-table td { border: none !important; padding: 0.2mm 0 !important; font-size: 7.5pt !important; }
+
+        .inner-list-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .inner-list-table td {
+            border: none !important;
+            height: auto !important;
+            padding: 0.2mm 0 !important;
+            font-size: 7.5pt !important;
+        }
         .inner-label { font-weight: bold; width: 30mm; display: inline-block; }
 
         @media print {
@@ -334,7 +350,7 @@
                 <tr>
                     <td style="width: 95mm;">
                         Übernahme am (Datum DD.MM.YYYY und Uhrzeit HH:MM)
-                        <div style="margin-top: 4mm; text-align: center;">____ . ____ . ________ &nbsp; / &nbsp; ____ : ____</div>
+                        <div class="line-placeholder">____ . ____ . ________ &nbsp; / &nbsp; ____ : ____</div>
                     </td>
                     <td style="width: 95mm;">Polizeiliches Kennzeichen (Verladeeinheit)</td>
                 </tr>
