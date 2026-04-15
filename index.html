@@ -2,70 +2,74 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Original Roche Abholschein - Präzisions-Generator</title>
+    <title>Roche Abholschein - Präzisions-Layout</title>
     <style>
         :root { --roche-blue: #0066CC; }
         * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; }
-        
-        /* UI COCKPIT - Modern & Dezent */
+        body { margin: 0; padding: 0; background: #f0f2f5; font-family: Arial, Helvetica, sans-serif; }
+
+        /* SaaS COCKPIT */
         #ui-cockpit {
-            background: #f8f9fa; padding: 15px; border-bottom: 1px solid #ddd;
-            display: flex; flex-wrap: wrap; gap: 10px; font-family: sans-serif;
+            width: 100%; background: #fff; padding: 15px; border-bottom: 2px solid var(--roche-blue);
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px;
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .input-group { display: flex; flex-direction: column; }
-        .input-group label { font-size: 10px; font-weight: bold; margin-bottom: 2px; color: #666; }
-        input { border: 1px solid #ccc; padding: 6px; border-radius: 4px; font-size: 12px; }
-        button { background: var(--roche-blue); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; align-self: flex-end; }
+        .input-group label { font-size: 10px; font-weight: bold; margin-bottom: 2px; text-transform: uppercase; color: #666; }
+        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 12px; }
+        #print-btn { grid-column: 1 / -1; background: var(--roche-blue); color: white; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        /* A4 PRÄZISION */
-        body { margin: 0; padding: 0; background: #525659; }
-        #page-container { display: flex; justify-content: center; padding: 20px 0; }
-        
+        /* A4 PAGE */
+        #page-container { padding: 20px 0; display: flex; justify-content: center; }
         .a4-page {
-            width: 210mm; height: 297mm; background: white;
-            padding: 10mm 15mm 10mm 15mm; /* Standard Ränder */
-            font-family: Arial, sans-serif; color: black;
-            display: flex; flex-direction: column; position: relative;
+            width: 210mm; height: 297mm; background: white; padding: 10mm 15mm;
+            position: relative; color: black; font-size: 8.5pt; line-height: 1.1;
         }
 
-        /* HEADER */
-        .header { display: flex; justify-content: space-between; margin-bottom: 5mm; }
-        .id-num { font-size: 8pt; margin-bottom: 2mm; display: block; }
-        .logo-box svg { width: 42mm; }
-        .title-box { text-align: right; }
-        .title-box h1 { font-size: 14pt; margin: 0; font-weight: bold; }
-        .title-box p { font-size: 10pt; margin: 0; }
+        /* VERTIKALE NUMMER LINKS */
+        .vertical-id {
+            position: absolute; left: 5mm; bottom: 35mm;
+            transform: rotate(-90deg); transform-origin: left bottom;
+            font-size: 8pt; font-weight: bold; white-space: nowrap;
+        }
 
-        /* ADRESSBLÖCKE - Streng getrennt */
-        .address-row { display: grid; grid-template-columns: 105mm 1fr; margin-bottom: 5mm; }
-        .addr-cell { border-top: 1.2pt solid black; padding-top: 1mm; font-size: 9pt; line-height: 1.2; }
-        .addr-label { font-weight: bold; display: block; margin-bottom: 1mm; }
-        
-        .contact-table { width: 100%; border-collapse: collapse; margin-top: 2mm; font-size: 8.5pt; }
-        .contact-table td { padding: 0.2mm 0; }
-        .contact-table td:first-child { width: 15mm; }
+        /* HEADER SECTION */
+        .header-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: flex-start; margin-bottom: 8mm; }
+        .header-left h1 { font-size: 12pt; margin: 0; font-weight: bold; }
+        .header-center { text-align: center; }
+        .barcode-img { width: 55mm; height: 12mm; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; font-size: 6pt; }
+        .header-right { text-align: right; }
+        .roche-logo { width: 32mm; }
 
-        /* MATRIX (Mittelteil) [cite: 146] */
-        .gray-header { background: #e0e0e0; border: 0.5pt solid black; padding: 1.5mm 3mm; font-weight: bold; font-size: 9pt; margin-top: 2mm; }
-        .matrix { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; border: 0.5pt solid black; border-top: none; }
-        .matrix-item { border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; padding: 1.5mm; min-height: 10mm; }
-        .matrix-item:nth-child(4n) { border-right: none; }
-        .m-label { font-size: 7pt; display: block; margin-bottom: 0.5mm; }
-        .m-val { font-size: 8.5pt; font-weight: bold; }
+        /* ADRESSBLÖCKE */
+        .address-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; margin-bottom: 5mm; }
+        .addr-block .title { font-weight: bold; border-bottom: 1px solid black; display: block; margin-bottom: 1mm; }
+        .contact-grid { display: grid; grid-template-columns: 15mm 1fr; margin-top: 2mm; gap: 1mm; }
 
-        /* WARENTABELLE */
-        .item-table { width: 100%; border-collapse: collapse; margin-top: 5mm; }
-        .item-table th { text-align: left; font-size: 8pt; border-bottom: 1.2pt solid black; padding: 2mm 0; }
-        .item-table td { font-size: 8.5pt; padding: 3mm 0; border-bottom: 0.2pt solid #eee; vertical-align: top; }
+        /* LOGISTIK MATRIX (Zentraler Teil) */
+        .logistics-table { width: 100%; border-collapse: collapse; margin-top: 5mm; border: 0.5pt solid black; }
+        .logistics-table td { border: 0.5pt solid black; padding: 1.5mm; vertical-align: top; }
+        .label-cell { font-size: 7pt; display: block; margin-bottom: 0.5mm; }
+        .val-cell { font-weight: bold; font-size: 8.5pt; }
 
-        /* SIGNATUREN (Raster 2x3 wie Word) [cite: 148] */
-        .sig-section { margin-top: auto; border: 0.5pt solid black; display: grid; grid-template-columns: 1fr 1fr; }
-        .sig-cell { border: 0.5pt solid black; padding: 1.5mm; min-height: 18mm; }
-        .sig-label { font-size: 7.5pt; display: block; }
-        .sig-line { border-top: 0.5pt solid black; margin-top: 10mm; font-size: 7pt; padding-top: 1mm; }
+        /* WAREN TABELLE */
+        .items-table { width: 100%; border-collapse: collapse; margin-top: 4mm; }
+        .items-table th { text-align: left; font-size: 8pt; border-bottom: 1pt solid black; padding: 1mm 0; }
+        .items-table td { padding: 2mm 0; border-bottom: 0.2pt solid #eee; font-size: 8pt; vertical-align: top; }
 
-        /* FOOTER  */
-        .footer { margin-top: 5mm; border-top: 0.5pt solid black; padding-top: 2mm; display: flex; justify-content: space-between; font-size: 7.5pt; }
+        /* SIGNATUR BOXEN (Originalgetreue 2x3 Struktur) */
+        .signature-title { font-weight: bold; margin-top: 5mm; margin-bottom: 1mm; font-size: 9pt; }
+        .sig-grid { display: grid; grid-template-columns: 1fr 1fr; border: 0.5pt solid black; }
+        .sig-box { border: 0.5pt solid black; padding: 2mm; height: 22mm; display: flex; flex-direction: column; }
+        .sig-box-wide { grid-column: 1 / 3; }
+        .sig-date-line { border-bottom: 0.5pt solid black; width: 40mm; margin-top: 8mm; display: flex; justify-content: space-between; font-size: 7pt; }
+
+        /* FOOTER */
+        .footer-grid { 
+            position: absolute; bottom: 10mm; left: 15mm; right: 15mm;
+            display: grid; grid-template-columns: 1.5fr 1fr 1.5fr 0.5fr; 
+            border-top: 0.5pt solid black; padding-top: 2mm; font-size: 7.5pt; 
+        }
 
         @media print {
             body { background: white; }
@@ -79,99 +83,113 @@
 <body>
 
     <div id="ui-cockpit">
-        <div class="input-group"><label>Abholschein Nr.</label><input type="text" id="i-nr" value="1100008922" oninput="upd()"></div>
+        <div class="input-group"><label>Belegnummer</label><input type="text" id="i-nr" value="1100008922" oninput="upd()"></div>
+        <div class="input-group"><label>Freight Unit</label><input type="text" id="i-fu" value="4100171488" oninput="upd()"></div>
         <div class="input-group"><label>Gewicht</label><input type="text" id="i-w" value="14,000 kg" oninput="upd()"></div>
-        <div class="input-group"><label>Spediteur</label><input type="text" id="i-sp" value="Solvias AG" oninput="upd()"></div>
-        <button onclick="window.print()">JETZT DRUCKEN</button>
+        <div class="input-group"><label>Termin</label><input type="text" id="i-date" value="30.03.2026" oninput="upd()"></div>
+        <button id="print-btn" onclick="window.print()">DOKUMENT DRUCKEN</button>
     </div>
 
     <div id="page-container">
         <div class="a4-page">
-            <span class="id-num">7640135792048TEC0165142V1 [cite: 149]</span>
-            
-            <div class="header">
-                <div class="logo-box">
-                    <svg viewBox="0 0 100 52">
-                        <polygon points="25,2 75,2 98,26 75,50 25,50 2,26" fill="none" stroke="#0066CC" stroke-width="2.5"/>
-                        <text x="50" y="34" font-family="Arial-BoldMT, Arial" font-weight="bold" font-size="18" fill="#0066CC" text-anchor="middle">Roche</text>
-                    </svg>
-                </div>
-                <div class="title-box">
-                    <h1>Abholschein <span id="o-nr">1100008922</span> [cite: 125]</h1>
+            <div class="vertical-id">7640135792048TEC0165142V1</div>
+
+            <div class="header-grid">
+                <div class="header-left">
+                    <h1>Abholschein <span id="o-nr">1100008922</span></h1>
                     <p>Transport Unit</p>
-                    <p>(Version 3.0) [cite: 126]</p>
+                    <p>(Version 3.0)</p>
+                </div>
+                <div class="header-center">
+                    <div class="barcode-img">|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||</div>
+                </div>
+                <div class="header-right">
+                    <svg class="roche-logo" viewBox="0 0 100 52"><polygon points="25,2 75,2 98,26 75,50 25,50 2,26" fill="none" stroke="#0066CC" stroke-width="2.5"/><text x="50" y="34" font-family="Arial" font-weight="bold" font-size="18" fill="#0066CC" text-anchor="middle">Roche</text></svg>
                 </div>
             </div>
 
             <div class="address-row">
-                <div class="addr-cell">
-                    <span class="addr-label">Auftraggeber [cite: 127]</span>
-                    <strong>F. Hoffmann-La Roche AG Yard Basel [cite: 128]</strong><br>
-                    : 092 / O2732.01 [cite: 129]<br>
-                    Grenzacherstrasse 124, 4070 Basel [cite: 130, 131]
-                    <table class="contact-table">
-                        <tr><td>Kontakt</td><td><strong>Véronique Escalin [cite: 137]</strong></td></tr>
-                        <tr><td>Telefon</td><td>+41 (61) 687 27 66 [cite: 138]</td></tr>
-                        <tr><td>E-Mail</td><td>veronique.escalin@roche.com [cite: 139]</td></tr>
-                        <tr><td>Datum</td><td>30.03.2026 [cite: 144]</td></tr>
-                    </table>
+                <div class="addr-block">
+                    <span class="title">Auftraggeber</span>
+                    <strong>F. Hoffmann-La Roche AG</strong><br>Yard Basel : 092 / O2732.01<br>Grenzacherstrasse 124, 4070 Basel, Schweiz
+                    <div class="contact-grid">
+                        <span>Kontakt</span><strong>Véronique Escalin</strong>
+                        <span>Telefon</span><span>+41 (61) 687 27 66</span>
+                        <span>E-Mail</span><span>veronique.escalin@roche.com</span>
+                    </div>
+                    <div style="margin-top: 4mm;">Datum &nbsp;&nbsp;&nbsp; <strong>30.03.2026</strong></div>
                 </div>
-                <div class="addr-cell" style="padding-left: 5mm;">
-                    <span class="addr-label">Spediteur [cite: 132]</span>
-                    <strong id="o-sp">Solvias AG [cite: 132]</strong><br>
-                    Römerpark 2, 4303 Kaiseraugst [cite: 132, 133]<br>
-                    Schweiz [cite: 134]
-                    <table class="contact-table">
-                        <tr><td>Kontakt</td><td><strong>Dino Iannucci [cite: 141]</strong></td></tr>
-                        <tr><td>Telefon</td><td>+41618456214 [cite: 142]</td></tr>
-                        <tr><td>E-Mail</td><td>dino.iannucci@solvias.com [cite: 143]</td></tr>
-                    </table>
+                <div class="addr-block">
+                    <span class="title">Spediteur</span>
+                    <strong>Solvias AG</strong><br>Römerpark 2, 4303 Kaiseraugst, Schweiz
+                    <div class="contact-grid">
+                        <span>Kontakt</span><strong>Dino Iannucci</strong>
+                        <span>Telefon</span><span>+41618456214</span>
+                        <span>E-Mail</span><span>dino.iannucci@solvias.com</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="gray-header">Die Abholung beinhaltet folgende Lieferungen / Freight Units: 4100171488 [cite: 145]</div>
-            <div class="matrix">
-                <div class="matrix-item" style="grid-column: span 2;"><span class="m-label">Abholadresse [cite: 146]</span><span class="m-val">F. Hoffmann-La Roche Ltd Site Logistics</span></div>
-                <div class="matrix-item" style="grid-column: span 2;"><span class="m-label">Warenempfänger [cite: 146]</span><span class="m-val">Solvias AG Römerpark 2, Kaiseraugst</span></div>
-                <div class="matrix-item"><span class="m-label">Anzahl Packstücke [cite: 146]</span><span class="m-val">1</span></div>
-                <div class="matrix-item"><span class="m-label">Gewicht brutto [cite: 146]</span><span class="m-val" id="o-w">14,000 kg</span></div>
-                <div class="matrix-item"><span class="m-label">Volumen [cite: 146]</span><span class="m-val">0.0 m3</span></div>
-                <div class="matrix-item"><span class="m-label">Zur Weiterleitung [cite: 146]</span><span class="m-val">Kurier</span></div>
-                <div class="matrix-item"><span class="m-label">Abholtermin [cite: 146]</span><span class="m-val">30.03.2026</span></div>
-                <div class="matrix-item"><span class="m-label">Liefertermin [cite: 146]</span><span class="m-val">30.03.2026</span></div>
-                <div class="matrix-item" style="grid-column: span 2;"><span class="m-label">Incoterms [cite: 146]</span><span class="m-val">CPT KAISERAUGST Incoterms ® 20</span></div>
-            </div>
+            <p style="font-weight: bold; margin-top: 5mm;">Die Abholung beinhaltet folgende Lieferungen / Freight Units:</p>
 
-            <table class="item-table">
+            <table class="logistics-table">
+                <tr>
+                    <td style="width: 25%;"><span class="label-cell">Freight Unit</span><span class="val-cell" id="o-fu">4100171488</span></td>
+                    <td style="width: 25%;"><span class="label-cell">Anzahl Packstücke</span><span class="val-cell">1</span></td>
+                    <td style="width: 25%;"><span class="label-cell">Gewicht brutto</span><span class="val-cell" id="o-w-m">14,000 kg</span></td>
+                    <td style="width: 25%;"><span class="label-cell">Volumen</span><span class="val-cell">0.0 m3</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><span class="label-cell">Abholadresse</span><span class="val-cell">F. Hoffmann-La Roche Ltd Site Logistics, Basel</span></td>
+                    <td colspan="2"><span class="label-cell">Warenempfänger</span><span class="val-cell">Solvias AG, Römerpark 2, Kaiseraugst</span></td>
+                </tr>
+                <tr>
+                    <td><span class="label-cell">Zur Weiterleitung</span><span class="val-cell">Kurier</span></td>
+                    <td><span class="label-cell">Abholtermin</span><span class="val-cell" id="o-date-a">30.03.2026</span></td>
+                    <td><span class="label-cell">Liefertermin</span><span class="val-cell" id="o-date-l">30.03.2026</span></td>
+                    <td><span class="label-cell">Incoterms</span><span class="val-cell">CPT KAISERAUGST</span></td>
+                </tr>
+                <tr>
+                    <td colspan="4"><span class="label-cell">Beilagen</span><span class="val-cell">Gemäss Speditionsauftrag</span></td>
+                </tr>
+            </table>
+
+            <table class="items-table">
                 <thead>
                     <tr>
-                        <th>Markierung [cite: 146]</th>
-                        <th>Verpackung / Dims. / Warenbeschreibung [cite: 146]</th>
-                        <th style="text-align: right;">Gewicht brutto [cite: 146]</th>
+                        <th style="width: 20%;">Markierung</th>
+                        <th style="width: 20%;">Verpackung / Dims.</th>
+                        <th style="width: 45%;">Warenbeschreibung</th>
+                        <th style="width: 15%; text-align: right;">Gewicht brutto</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>376401357901165903</td>
-                        <td>Solvias 33521, Temperaturgeführte Verpackung, 1 Bag mit 1 Tube.<br>Batch: STF25-2603ET01_M3-2</td>
-                        <td style="text-align: right; font-weight: bold;">14,000 kg</td>
+                        <td>Solvias 33521</td>
+                        <td>Temperaturgeführte Verpackung, 1 Bag mit 1 Tube. Batch: STF25-2603ET01_M3-2</td>
+                        <td style="text-align: right; font-weight: bold;" id="o-w-t">14,000 kg</td>
                     </tr>
                 </tbody>
             </table>
 
-            <div style="font-weight: bold; font-size: 9pt; margin-top: 5mm; margin-bottom: 1mm;">Übernahme bestätigt: [cite: 147]</div>
-            <div class="sig-section">
-                <div class="sig-cell"><span class="sig-label">Übernahme am (Datum DD.MM.YYYY und Uhrzeit HH:MM) [cite: 148]</span><div class="sig-line">. . / :</div></div>
-                <div class="sig-cell"><span class="sig-label">Polizeiliches Kennzeichen (Verladeeinheit) [cite: 148]</span></div>
-                <div class="sig-cell"><span class="sig-label">Name des Fahrers (in Blockschrift) [cite: 148]</span></div>
-                <div class="sig-cell"><span class="sig-label">Unterschrift des Fahrers [cite: 148]</span></div>
-                <div class="sig-cell" style="grid-column: span 2;"><span class="sig-label">Visum des Roche-Mitarbeiters [cite: 148]</span></div>
+            <div class="signature-title">Übernahme bestätigt: [cite: 147]</div>
+            <div class="sig-grid">
+                <div class="sig-box">
+                    <span class="label-cell">Übernahme am (Datum DD.MM.YYYY und Uhrzeit HH:MM)</span>
+                    <div class="sig-date-line"><span>.</span><span>.</span><span>/</span><span>:</span></div>
+                </div>
+                <div class="sig-box"><span class="label-cell">Polizeiliches Kennzeichen (Verladeeinheit)</span></div>
+                <div class="sig-box"><span class="label-cell">Name des Fahrers (in Blockschrift)</span></div>
+                <div class="sig-box"><span class="label-cell">Unterschrift des Fahrers</span></div>
+                <div class="sig-box sig-box-wide"><span class="label-cell">Visum des Roche-Mitarbeiters</span></div>
             </div>
 
-            <div class="footer">
-                <div>Grenzacherstrasse 124, 4070 Basel / Schweiz </div>
-                <div>Bau 041 / 3.005 [cite: 151] | E-Mail: basel.site-logistics@roche.com [cite: 152]</div>
-                <div>Fax. +41 61 688 69 02 [cite: 151] | Seite 1 / 1 [cite: 153]</div>
+            <div class="footer-grid">
+                <div>F. Hoffmann-La Roche AG<br>Grenzacherstrasse 124<br>4070 Basel / Schweiz</div>
+                <div>Standortlogistik<br>Bau 041 / 3.005</div>
+                <div>Tel: +41 61 688 72 27<br>Fax: +41 61 688 69 02<br>E-Mail: basel.site-logistics@roche.com</div>
+                <div style="text-align: right;">Seite 1 / 1</div>
             </div>
         </div>
     </div>
@@ -179,8 +197,12 @@
     <script>
         function upd() {
             document.getElementById('o-nr').innerText = document.getElementById('i-nr').value;
-            document.getElementById('o-sp').innerText = document.getElementById('i-sp').value;
-            document.getElementById('o-w').innerText = document.getElementById('i-w').value;
+            document.getElementById('o-fu').innerText = document.getElementById('i-fu').value;
+            document.getElementById('o-w-m').innerText = document.getElementById('i-w').value;
+            document.getElementById('o-w-t').innerText = document.getElementById('i-w').value;
+            const d = document.getElementById('i-date').value;
+            document.getElementById('o-date-a').innerText = d;
+            document.getElementById('o-date-l').innerText = d;
         }
     </script>
 </body>
