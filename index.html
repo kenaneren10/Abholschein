@@ -47,9 +47,9 @@
         .roche-logo-pos {
             position: absolute;
             top: 12mm;
-            right: 5mm; /* 0,5 cm von rechts */
-            width: 20mm; /* 2 cm lang */
-            height: 10mm; /* 1 cm hoch */
+            right: 5mm; 
+            width: 20mm; 
+            height: 10mm; 
         }
 
         /* ADRESS-SECTION (Start bei 43mm) */
@@ -74,7 +74,7 @@
 
         .contact-table {
             border-collapse: collapse;
-            margin-top: 10mm; /* 1,0 cm Abstand nach "Schweiz" */
+            margin-top: 10mm; 
             width: 100%;
         }
 
@@ -82,10 +82,8 @@
         .label-col { width: 25mm; } 
         .value-col { width: 70mm; }
 
-        /* Abstand Email zu Datum: 0,5 cm */
         .datum-row td { padding-top: 5mm; }
 
-        /* NEUES TEXTFELD: 0,5 cm unter dem Datum */
         .freight-unit-text {
             margin-top: 5mm;
             width: 100%;
@@ -95,12 +93,12 @@
 
         .section-label { font-weight: bold; display: block; margin-bottom: 2mm; }
 
-        /* ZONE 2: TABELLE (NACH UNTEN KORRIGIERT AUF 122MM) */
+        /* ZONE 2: TABELLEN */
         .matrix-container {
             position: absolute;
-            top: 122mm; /* Weiter nach unten geschoben, um Überlagerung zu vermeiden */
-            left: 12mm; /* 1,2 cm von links */
-            width: 190mm; /* 19 cm Gesamtbreite */
+            top: 122mm; 
+            left: 12mm; 
+            width: 190mm; 
         }
 
         .matrix-table {
@@ -113,14 +111,42 @@
         .matrix-table td {
             border: 0.5pt solid black;
             padding: 0 1.5mm;
-            height: 5mm; /* 0,5 cm Höhe */
+            height: 5mm; 
             vertical-align: middle;
             font-size: 8.5pt;
-            overflow: hidden;
-            white-space: nowrap;
         }
 
-        .m-label { font-weight: bold; margin-right: 1mm; }
+        /* Neue Tabelle 2.3 cm hoch */
+        .matrix-table-second {
+            width: 190mm;
+            border-collapse: collapse;
+            table-layout: fixed;
+            border: 0.5pt solid black;
+            border-top: none; /* Verhindert doppelte Linie zur oberen Tabelle */
+        }
+
+        .matrix-table-second td {
+            border: 0.5pt solid black;
+            padding: 1mm 1.5mm;
+            height: 23mm; /* 2,3 cm Höhe */
+            vertical-align: top;
+            font-size: 8pt;
+        }
+
+        .m-label { font-weight: bold; font-size: 8pt; display: block; margin-bottom: 1mm; }
+
+        /* Hilfsklasse für die Liste rechts */
+        .inner-list-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .inner-list-table td {
+            border: none !important;
+            height: auto !important;
+            padding: 0.2mm 0 !important;
+            font-size: 7.5pt !important;
+        }
+        .inner-label { font-weight: bold; width: 30mm; display: inline-block; }
 
         @media print {
             body { background: white; }
@@ -200,10 +226,37 @@
         <div class="matrix-container">
             <table class="matrix-table">
                 <tr>
-                    <td style="width: 54mm;"><span class="m-label">Freight Unit</span> 4100171488</td>
-                    <td style="width: 42mm;"><span class="m-label">Anzahl Packstücke</span> 1</td>
-                    <td style="width: 47mm;"><span class="m-label">Gewicht brutto</span> 14,000 kg</td>
-                    <td style="width: 47mm;"><span class="m-label">Volumen</span> 0.0 m3</td>
+                    <td style="width: 54mm;"><span class="m-label" style="display:inline;">Freight Unit</span> 4100171488</td>
+                    <td style="width: 42mm;"><span class="m-label" style="display:inline;">Anzahl Packstücke</span> 1</td>
+                    <td style="width: 47mm;"><span class="m-label" style="display:inline;">Gewicht brutto</span> 14,000 kg</td>
+                    <td style="width: 47mm;"><span class="m-label" style="display:inline;">Volumen</span> 0.0 m3</td>
+                </tr>
+            </table>
+
+            <table class="matrix-table-second">
+                <tr>
+                    <td style="width: 45mm;">
+                        <span class="m-label">Abholadresse</span>
+                        F. Hoffmann-La Roche Ltd<br>
+                        Site Logistics<br>
+                        Grenzacherstrasse 124<br>
+                        4070 Basel, Schweiz
+                    </td>
+                    <td style="width: 45mm;">
+                        <span class="m-label">Warenempfänger</span>
+                        Solvias AG<br>
+                        Römerpark 2<br>
+                        4303 Kaiseraugst, Schweiz
+                    </td>
+                    <td style="width: 100mm;">
+                        <table class="inner-list-table">
+                            <tr><td><span class="inner-label">Zur Weiterleitung</span> Kurier</td></tr>
+                            <tr><td><span class="inner-label">Abholtermin</span> 30.03.2026</td></tr>
+                            <tr><td><span class="inner-label">Liefertermin</span> 30.03.2026</td></tr>
+                            <tr><td><span class="inner-label">Incoterms</span> CPT KAISERAUGST Incoterms ® 20</td></tr>
+                            <tr><td><span class="inner-label">Beilagen</span> Gemäss Speditionsauftrag</td></tr>
+                        </table>
+                    </td>
                 </tr>
             </table>
         </div>
