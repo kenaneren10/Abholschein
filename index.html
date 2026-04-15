@@ -3,149 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <style>
+        /* PDF BASIS-KONFIGURATION */
         * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; }
-        body { margin: 0; padding: 0; background-color: #f0f2f5; font-family: Arial, sans-serif; }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
         .a4-page {
-            width: 210mm; height: 297mm; background: white; margin: 10mm auto;
-            position: relative; padding: 0; color: black;
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            margin: 10mm auto;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
         }
 
-        /* SCHRIFTGRÖSSEN */
-        .f10 { font-size: 10pt; line-height: 1.2; }
-        .f12 { font-size: 12pt; line-height: 1.2; }
-        .f8 { font-size: 8pt; }
+        /* SCHRIFTEN */
+        .text-10 { font-size: 10pt; line-height: 1.2; font-weight: normal; }
+        .text-12 { font-size: 12pt; line-height: 1.2; font-weight: normal; }
 
-        /* ZONE 1: HEADER (Oberkante 12mm) */
-        .h-left { position: absolute; top: 12mm; left: 15mm; width: 70mm; }
-        .h-barcode { position: absolute; top: 12mm; left: 82mm; height: 13mm; width: 60mm; border: 0.5pt solid #eee; }
-        .h-logo { position: absolute; top: 12mm; right: 5mm; width: 20mm; height: 10mm; }
+        /* ZONE 1: HEADER (Oberkante 12mm, Barcode-Höhe 13mm) */
+        .header-left-block {
+            position: absolute;
+            top: 12mm;
+            left: 15mm;
+            width: 70mm;
+        }
 
-        /* ADRESSEN (Start bei 43mm = 12 + 13 + 18) */
-        .addr-section { position: absolute; top: 43mm; left: 15mm; width: 180mm; }
-        .addr-left { position: absolute; left: 0; width: 85mm; }
-        .addr-right { position: absolute; left: 93mm; width: 85mm; } /* 108mm von Blattkante */
+        .barcode-area {
+            position: absolute;
+            top: 12mm;
+            left: 82mm; 
+            height: 13mm; 
+            width: 60mm;
+        }
 
-        .contact-table { border-collapse: collapse; margin-top: 10mm; width: 100%; }
-        .contact-table td { padding: 0; vertical-align: top; }
+        .barcode-svg { width: 100%; height: 100%; }
+
+        .roche-logo-pos {
+            position: absolute;
+            top: 12mm;
+            right: 5mm; /* 0,5 cm von rechts */
+            width: 20mm; /* 2 cm lang */
+            height: 10mm; /* 1 cm hoch */
+        }
+
+        /* ADRESS-SECTION (Start bei 43mm) */
+        .address-section {
+            position: absolute;
+            top: 43mm; 
+            left: 0;
+            width: 100%;
+        }
+
+        .auftraggeber-block {
+            position: absolute;
+            left: 15mm;
+            width: 85mm;
+        }
+
+        .spediteur-block {
+            position: absolute;
+            left: 108mm; 
+            width: 85mm;
+        }
+
+        .contact-table {
+            border-collapse: collapse;
+            margin-top: 10mm; /* 1,0 cm Abstand nach "Schweiz" */
+            width: 100%;
+        }
+
+        .contact-table td { padding: 0; vertical-align: top; line-height: 1.2; }
+        .label-col { width: 25mm; } 
+        .value-col { width: 70mm; }
+
+        /* Abstand Email zu Datum: 0,5 cm */
         .datum-row td { padding-top: 5mm; }
 
-        /* ZONE 2: LOGISTIK-MATRIX */
-        .zone-2 { position: absolute; top: 115mm; left: 10mm; width: 190mm; }
-        
-        .fu-line { margin-bottom: 7mm; white-space: nowrap; }
-
-        /* Die Matrix-Tabelle */
-        .matrix {
-            width: 190mm;
-            border-collapse: collapse;
-            table-layout: fixed;
-            border: 0.75pt solid black;
+        /* NEUES TEXTFELD: 0,5 cm unter dem Datum */
+        .freight-unit-text {
+            margin-top: 5mm;
+            width: 100%;
+            font-weight: normal;
         }
 
-        .matrix td {
-            border: 0.5pt solid black;
-            padding: 1mm 2mm;
-            vertical-align: top;
-            font-size: 8.5pt;
-        }
-
-        .label { font-weight: bold; display: block; font-size: 8pt; margin-bottom: 0.5mm; }
-
-        /* Spezifische Höhen für die Zeilen */
-        .row-addr { height: 28mm; }
-        .row-items { height: 25mm; }
+        .section-label { font-weight: bold; display: block; margin-bottom: 2mm; }
 
         @media print {
             body { background: white; }
-            .a4-page { margin: 0; }
+            .a4-page { margin: 0; box-shadow: none; }
             @page { size: A4; margin: 0; }
         }
     </style>
 </head>
 <body>
     <div class="a4-page">
-        <div class="h-left">
-            <div class="f12">Abholschein 1100008922</div>
-            <div class="f12">Transport Unit</div>
-            <div class="f10" style="margin-top:1mm">(Version 3.0)</div>
+        <div class="header-left-block">
+            <div class="text-12">Abholschein 1100008922</div>
+            <div class="text-12">Transport Unit</div>
+            <div class="text-10" style="margin-top: 1mm;">(Version 3.0)</div>
         </div>
 
-        <div class="h-barcode">
-            <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 20">
-                <rect x="0" width="1.5" height="20" fill="black"/><rect x="4" width="0.8" height="20" fill="black"/>
-                <rect x="8" width="2" height="20" fill="black"/><rect x="14" width="1" height="20" fill="black"/>
-                <rect x="20" width="0.8" height="20" fill="black"/><rect x="25" width="2" height="20" fill="black"/>
-                <rect x="35" width="1.5" height="20" fill="black"/><rect x="42" width="0.8" height="20" fill="black"/>
-                <rect x="50" width="2" height="20" fill="black"/><rect x="60" width="1" height="20" fill="black"/>
-                <rect x="70" width="0.8" height="20" fill="black"/><rect x="80" width="2" height="20" fill="black"/>
+        <div class="barcode-area">
+            <svg class="barcode-svg" preserveAspectRatio="none" viewBox="0 0 100 20">
+                <rect x="0" width="1.5" height="20" fill="black"/><rect x="3" width="0.8" height="20" fill="black"/>
+                <rect x="5" width="2.5" height="20" fill="black"/><rect x="12" width="1.5" height="20" fill="black"/>
+                <rect x="16" width="0.8" height="20" fill="black"/><rect x="22" width="2.5" height="20" fill="black"/>
+                <rect x="30" width="1.5" height="20" fill="black"/><rect x="35" width="2.5" height="20" fill="black"/>
+                <rect x="42" width="0.8" height="20" fill="black"/><rect x="48" width="2.5" height="20" fill="black"/>
+                <rect x="55" width="1.5" height="20" fill="black"/><rect x="62" width="2.5" height="20" fill="black"/>
+                <rect x="70" width="0.8" height="20" fill="black"/><rect x="78" width="1.5" height="20" fill="black"/>
+                <rect x="85" width="2.5" height="20" fill="black"/><rect x="95" width="1.5" height="20" fill="black"/>
             </svg>
         </div>
 
-        <div class="h-logo">
+        <div class="roche-logo-pos">
             <svg width="20mm" height="10mm" viewBox="0 0 100 52">
                 <polygon points="25,2 75,2 98,26 75,50 25,50 2,26" fill="none" stroke="#0066CC" stroke-width="3"/>
                 <text x="50" y="34" font-family="Arial" font-weight="bold" font-size="20" fill="#0066CC" text-anchor="middle">Roche</text>
             </svg>
         </div>
 
-        <div class="addr-section">
-            <div class="addr-left f10">
-                <strong>Auftraggeber</strong><br>
-                F. Hoffmann-La Roche AG, Yard Basel<br>
-                : 092 / O2732.01, Grenzacherstrasse 124<br>
-                4070 Basel, Schweiz
-                <table class="contact-table f10">
-                    <tr><td style="width:25mm">Kontakt</td><td>Véronique Escalin</td></tr>
-                    <tr><td>Telefon</td><td>+41 (61) 687 27 66</td></tr>
-                    <tr><td>E-Mail</td><td>veronique.escalin@roche.com</td></tr>
-                    <tr class="datum-row"><td>Datum</td><td>30.03.2026</td></tr>
-                </table>
-            </div>
-            <div class="addr-right f10">
-                <strong>Spediteur</strong><br>
-                Solvias AG, Römerpark 2<br>
-                4303 Kaiseraugst, Schweiz
-                <table class="contact-table f10">
-                    <tr><td style="width:25mm">Kontakt</td><td>Dino Iannucci</td></tr>
-                    <tr><td>Telefon</td><td>+41618456214</td></tr>
-                    <tr><td>E-Mail</td><td>dino.iannucci@solvias.com</td></tr>
-                </table>
-            </div>
-        </div>
+        <div class="address-section">
+            <div class="auftraggeber-block text-10">
+                <span class="section-label">Auftraggeber</span>
+                F. Hoffmann-La Roche AG<br>
+                Yard Basel<br>
+                : 092 / O2732.01<br>
+                Grenzacherstrasse 124<br>
+                4070 Basel<br>
+                Schweiz
 
-        <div class="zone-2">
-            <div class="fu-line f10">Die Abholung beinhaltet folgende Lieferungen / Freight Units:</div>
-            
-            <table class="matrix">
-                <tr>
-                    <td style="width:45mm"><span class="label">Freight Unit</span>4100171488</td>
-                    <td style="width:45mm"><span class="label">Anzahl Packstücke</span>1</td>
-                    <td style="width:50mm"><span class="label">Gewicht brutto</span>14,000 kg</td>
-                    <td style="width:50mm"><span class="label">Volumen</span>0.0 m3</td>
-                </tr>
-                <tr class="row-addr">
-                    <td><span class="label">Abholadresse</span>F. Hoffmann-La Roche Ltd<br>Site Logistics<br>Grenzacherstrasse 124<br>4070 Basel<br>Schweiz</td>
-                    <td><span class="label">Warenempfänger</span>Solvias AG<br>Römerpark 2<br>4303 Kaiseraugst<br>Schweiz</td>
-                    <td colspan="2" style="padding:0">
-                        <table style="width:100%; border-collapse:collapse; height:100%">
-                            <tr><td style="border:none; border-bottom:0.5pt solid black"><span class="label">Zur Weiterleitung</span>Kurier</td></tr>
-                            <tr><td style="border:none; border-bottom:0.5pt solid black"><span class="label">Abholtermin</span>30.03.2026</td></tr>
-                            <tr><td style="border:none; border-bottom:0.5pt solid black"><span class="label">Liefertermin</span>30.03.2026</td></tr>
-                            <tr><td style="border:none; border-bottom:0.5pt solid black"><span class="label">Incoterms</span>CPT KAISERAUGST Incoterms ® 20</td></tr>
-                            <tr><td style="border:none"><span class="label">Beilagen</span>Gemäss Speditionsauftrag</td></tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr class="row-items">
-                    <td style="width:35mm"><span class="label">Markierung</span><div style="margin-top:5mm">376401357901165903</div></td>
-                    <td style="width:40mm"><span class="label">Verpackung / Dims.</span><div style="margin-top:5mm">Temperaturgeführte Verpackung</div></td>
-                    <td style="width:95mm"><span class="label">Warenbeschreibung</span>Solvias 33521, 1 Bag mit 1 Tube<br>Inhalt: Batch: STF25-2603ET01_M3-2</td>
-                    <td style="width:20mm; text-align:right"><span class="label">Gewicht brutto</span><div style="margin-top:10mm">14.000 kg</div></td>
-                </tr>
-            </table>
-            <div style="font-weight:bold; font-size:9pt; margin-top:2mm">Übernahme bestätigt:</div>
+                <table class="contact-table text-10">
+                    <tr><td class="label-col">Kontakt</td><td class="value-col">Véronique Escalin</td></tr>
+                    <tr><td class="label-col">Telefon</td><td class="value-col">+41 (61) 687 27 66</td></tr>
+                    <tr><td class="label-col">E-Mail</td><td class="value-col">veronique.escalin@roche.com</td></tr>
+                    <tr class="datum-row">
+                        <td class="label-col">Datum</td>
+                        <td class="value-col">30.03.2026</td>
+                    </tr>
+                </table>
+
+                <div class="freight-unit-text text-10">
+                    Die Abholung beinhaltet folgende Lieferungen / Freight Units:
+                </div>
+            </div>
+
+            <div class="spediteur-block text-10">
+                <span class="section-label">Spediteur</span>
+                Solvias AG<br>
+                Römerpark 2<br>
+                4303 Kaiseraugst<br>
+                Schweiz
+
+                <table class="contact-table text-10">
+                    <tr><td class="label-col">Kontakt</td><td class="value-col">Dino Iannucci</td></tr>
+                    <tr><td class="label-col">Telefon</td><td class="value-col">+41618456214</td></tr>
+                    <tr><td class="label-col">E-Mail</td><td class="value-col">dino.iannucci@solvias.com</td></tr>
+                </table>
+            </div>
         </div>
-    </div>
+        
+        </div>
 </body>
 </html>
