@@ -52,7 +52,7 @@
             height: 10mm; /* 1 cm hoch */
         }
 
-        /* ADRESS-SECTION (Start bei 43mm = 12mm Top + 13mm Barcode + 18mm Lücke) */
+        /* ADRESS-SECTION (Start bei 43mm) */
         .address-section {
             position: absolute;
             top: 43mm; 
@@ -90,15 +90,15 @@
             margin-top: 5mm;
             width: 100%;
             font-weight: normal;
-            white-space: nowrap; /* Garantiert eine Linie */
+            white-space: nowrap; 
         }
 
         .section-label { font-weight: bold; display: block; margin-bottom: 2mm; }
 
-        /* ZONE 2: TABELLE (PRÄZISE POSITIONIERUNG 0,5CM UNTER DEM TEXT) */
+        /* ZONE 2: TABELLE (NACH UNTEN KORRIGIERT AUF 122MM) */
         .matrix-container {
             position: absolute;
-            top: 113mm; /* Exakt austariert, um 0,5cm unter dem Textfeld zu liegen */
+            top: 122mm; /* Weiter nach unten geschoben, um Überlagerung zu vermeiden */
             left: 12mm; /* 1,2 cm von links */
             width: 190mm; /* 19 cm Gesamtbreite */
         }
@@ -113,7 +113,7 @@
         .matrix-table td {
             border: 0.5pt solid black;
             padding: 0 1.5mm;
-            height: 5mm; /* 0,5 cm Höhe der Zelle */
+            height: 5mm; /* 0,5 cm Höhe */
             vertical-align: middle;
             font-size: 8.5pt;
             overflow: hidden;
