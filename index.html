@@ -52,7 +52,7 @@
             height: 10mm; /* 1 cm hoch */
         }
 
-        /* ADRESS-SECTION (Start bei 43mm) */
+        /* ADRESS-SECTION (Start bei 43mm = 12mm Top + 13mm Barcode + 18mm Lücke) */
         .address-section {
             position: absolute;
             top: 43mm; 
@@ -90,6 +90,7 @@
             margin-top: 5mm;
             width: 100%;
             font-weight: normal;
+            white-space: nowrap; /* Garantiert eine Linie */
         }
 
         .section-label { font-weight: bold; display: block; margin-bottom: 2mm; }
@@ -168,7 +169,6 @@
                 </table>
             </div>
         </div>
-        
-        </div>
+    </div>
 </body>
 </html>
