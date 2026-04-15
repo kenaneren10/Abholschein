@@ -23,23 +23,23 @@
             padding: 0;
         }
 
-        /* SCHRIFTEN */
+        /* SCHRIFTEN - Arial 12/10, "dünn" */
         .text-10 { font-size: 10pt; line-height: 1.2; font-weight: normal; }
         .text-12 { font-size: 12pt; line-height: 1.2; font-weight: normal; }
 
-        /* ZONE 1: HEADER (Unterkante bei 17mm) */
+        /* ZONE 1: HEADER (Oberkante Barcode bei 12mm) */
         
         .header-left-block {
             position: absolute;
-            top: 4mm; /* Damit Unterkante bei ca. 17mm liegt */
+            top: 12mm; /* Startet auf der gleichen Höhe wie der Barcode */
             left: 15mm;
             width: 70mm;
         }
 
-        /* Barcode: 13mm hoch, Unterkante 17mm -> top: 4mm */
+        /* Barcode: 13mm hoch, Oberkante 12mm */
         .barcode-area {
             position: absolute;
-            top: 4mm;
+            top: 12mm;
             left: 82mm; /* 8,2 cm von links */
             height: 13mm; /* 1,3 cm hoch */
             width: 60mm;
@@ -47,10 +47,10 @@
 
         .barcode-svg { width: 100%; height: 100%; }
 
-        /* Roche Logo: 10mm hoch, Unterkante 17mm -> top: 7mm */
+        /* Roche Logo: 10mm hoch, Oberkante ebenfalls bei 12mm */
         .roche-logo-pos {
             position: absolute;
-            top: 7mm;
+            top: 12mm;
             right: 5mm; /* 0,5 cm von rechts */
             width: 20mm; /* 2 cm lang */
             height: 10mm; /* 1 cm hoch */
@@ -110,23 +110,23 @@
 
         <div class="barcode-area">
             <svg class="barcode-svg" preserveAspectRatio="none" viewBox="0 0 100 20">
-                <rect x="0" width="1" height="20" fill="black"/>
-                <rect x="2" width="0.5" height="20" fill="black"/>
-                <rect x="4" width="2" height="20" fill="black"/>
-                <rect x="10" width="1" height="20" fill="black"/>
-                <rect x="14" width="0.5" height="20" fill="black"/>
-                <rect x="18" width="2" height="20" fill="black"/>
-                <rect x="25" width="1.5" height="20" fill="black"/>
-                <rect x="30" width="1" height="20" fill="black"/>
-                <rect x="40" width="2" height="20" fill="black"/>
-                <rect x="45" width="0.5" height="20" fill="black"/>
-                <rect x="52" width="2" height="20" fill="black"/>
-                <rect x="60" width="1" height="20" fill="black"/>
-                <rect x="68" width="2" height="20" fill="black"/>
-                <rect x="75" width="0.5" height="20" fill="black"/>
-                <rect x="82" width="1.5" height="20" fill="black"/>
-                <rect x="90" width="2" height="20" fill="black"/>
-                <rect x="95" width="1" height="20" fill="black"/>
+                <rect x="0" width="1.2" height="20" fill="black"/>
+                <rect x="3" width="0.6" height="20" fill="black"/>
+                <rect x="5" width="2.2" height="20" fill="black"/>
+                <rect x="11" width="1.2" height="20" fill="black"/>
+                <rect x="15" width="0.6" height="20" fill="black"/>
+                <rect x="19" width="2.2" height="20" fill="black"/>
+                <rect x="26" width="1.6" height="20" fill="black"/>
+                <rect x="31" width="1.2" height="20" fill="black"/>
+                <rect x="41" width="2.2" height="20" fill="black"/>
+                <rect x="46" width="0.6" height="20" fill="black"/>
+                <rect x="53" width="2.2" height="20" fill="black"/>
+                <rect x="61" width="1.2" height="20" fill="black"/>
+                <rect x="69" width="2.2" height="20" fill="black"/>
+                <rect x="76" width="0.6" height="20" fill="black"/>
+                <rect x="83" width="1.6" height="20" fill="black"/>
+                <rect x="91" width="2.2" height="20" fill="black"/>
+                <rect x="96" width="1.2" height="20" fill="black"/>
             </svg>
         </div>
 
