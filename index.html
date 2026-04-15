@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* PDF GRUNDLAGEN */
-        @media print {
-            .no-print { display: none; }
-            body { margin: 0; }
-        }
-
+        /* PDF BASIS-KONFIGURATION */
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; }
+        
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
         }
 
         .a4-page {
@@ -21,100 +18,111 @@
             height: 297mm;
             background: white;
             margin: 10mm auto;
-            padding: 15mm; /* Standard-Sicherheitsabstand */
-            position: relative;
-            box-sizing: border-box;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative; /* Wichtig für absolute Positionierung der Blöcke */
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            padding: 0; /* Wir positionieren alles präzise über mm-Angaben */
         }
 
-        /* SCHRIFTGRÖSSEN */
-        .text-10 { font-size: 10pt; }
-        .text-12 { font-size: 12pt; font-weight: bold; }
+        /* SCHRIFTEN */
+        .text-10 { font-size: 10pt; line-height: 1.2; }
+        .text-12 { font-size: 12pt; font-weight: bold; line-height: 1.2; }
 
-        /* HEADER ZONE 1 */
-        .header-row {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 10mm;
+        /* ZONE 1: HEADER (Oben) */
+        .header-left-block {
+            position: absolute;
+            top: 15mm;
+            left: 15mm;
+            width: 70mm; /* Die rote "7" aus deinem Screenshot */
         }
 
-        .barcode-container {
-            margin-left: 21mm; /* Abstand vom ersten Textblock zum Code */
-            margin-right: 18mm; /* Abstand vom Code zum Spediteur-Block */
+        .barcode-pos {
+            position: absolute;
+            top: 15mm;
+            left: 106mm; /* Berechnet aus 70mm + 21mm Gap + margin */
             height: 18mm;
-            display: flex;
-            align-items: center;
-        }
-
-        .barcode-placeholder {
-            width: 40mm; /* Geschätzte Breite, da Gap-Maße fix sind */
-            height: 18mm;
-            background: #000;
+            width: 50mm;
+            background: #000; /* Platzhalter Barcode */
         }
 
         .roche-logo-pos {
-            margin-left: 35mm; /* 3,5 cm Abstand vom Barcode zum Logo */
-        }
-
-        /* ADRESS- UND KONTAKTBLÖCKE */
-        .address-container {
-            position: relative;
-            margin-top: 10mm;
-        }
-
-        .column-left {
-            width: 100mm;
-        }
-
-        .column-right {
             position: absolute;
-            left: 108mm; /* Der 10,8 cm Abstand von der linken Seite */
-            top: 0;
+            top: 15mm;
+            right: 15mm;
         }
 
-        /* KONTAKT TABELLEN STRUKTUR */
+        /* ZONE 1: ADRESSEN (Ab 8,2 cm) */
+        .address-section {
+            position: absolute;
+            top: 82mm; /* Die rote "8,2" aus deinem Screenshot */
+            left: 0;
+            width: 100%;
+        }
+
+        .auftraggeber-block {
+            position: absolute;
+            left: 15mm;
+            width: 85mm;
+        }
+
+        .spediteur-block {
+            position: absolute;
+            left: 108mm; /* Die blaue "10,8" aus deinem Screenshot */
+            width: 85mm;
+        }
+
+        /* KONTAKT-TABELLEN */
         .contact-table {
             border-collapse: collapse;
-            margin-top: 5mm;
+            margin-top: 8mm;
+            width: 100%;
         }
 
         .contact-table td {
-            padding-bottom: 5mm; /* 0,5 cm vertikaler Abstand */
+            padding-bottom: 5mm; /* 0,5 cm vertikaler Abstand zwischen den Zeilen */
             vertical-align: top;
         }
 
-        .label-col { width: 25mm; } /* 2,5 cm Breite für "Kontakt", "Telefon" etc. */
-        .value-col { width: 70mm; } /* 7,0 cm Breite für die Werte */
+        .label-col { 
+            width: 25mm; /* 2,5 cm Spaltenbreite */
+        }
 
+        .value-col { 
+            width: 70mm; /* 7,0 cm Spaltenbreite */
+        }
+
+        /* Hilfsklasse für Fettdruck in Adressen */
+        .addr-title { font-weight: bold; margin-bottom: 2mm; display: block; }
+
+        @media print {
+            body { background: white; }
+            .a4-page { margin: 0; box-shadow: none; }
+            @page { size: A4; margin: 0; }
+        }
     </style>
 </head>
 <body>
 
     <div class="a4-page">
         
-        <div class="header-row">
-            <div>
-                <div class="text-12">Abholschein 1100008922</div>
-                <div class="text-12">Transport Unit</div>
-                <div class="text-10">(Version 3.0)</div>
-            </div>
-
-            <div class="barcode-container">
-                <div class="barcode-placeholder"></div>
-            </div>
-
-            <div class="roche-logo-pos">
-                <svg width="35mm" viewBox="0 0 100 50">
-                    <path d="M10,25 L30,5 L70,5 L90,25 L70,45 L30,45 Z" fill="none" stroke="#0066cc" stroke-width="2"/>
-                    <text x="50" y="32" font-family="Arial" font-size="14" fill="#0066cc" text-anchor="middle" font-weight="bold">Roche</text>
-                </svg>
-            </div>
+        <div class="header-left-block">
+            <div class="text-12">Abholschein 1100008922</div>
+            <div class="text-12">Transport Unit</div>
+            <div class="text-10">(Version 3.0)</div>
         </div>
 
-        <div class="address-container">
+        <div class="barcode-pos"></div>
+
+        <div class="roche-logo-pos">
+            <svg width="32mm" viewBox="0 0 100 50">
+                <path d="M10,25 L30,5 L70,5 L90,25 L70,45 L30,45 Z" fill="none" stroke="#0066cc" stroke-width="2.5"/>
+                <text x="50" y="32" font-family="Arial" font-size="16" fill="#0066cc" text-anchor="middle" font-weight="bold">Roche</text>
+            </svg>
+        </div>
+
+        <div class="address-section">
             
-            <div class="column-left text-10">
-                <strong>Auftraggeber</strong><br>
+            <div class="auftraggeber-block text-10">
+                <span class="addr-title">Auftraggeber</span>
                 F. Hoffmann-La Roche AG<br>
                 Yard Basel<br>
                 : 092 / O2732.01<br>
@@ -142,15 +150,14 @@
                 </table>
             </div>
 
-            <div class="column-right text-10">
-                <strong>Spediteur</strong><br>
+            <div class="spediteur-block text-10">
+                <span class="addr-title">Spediteur</span>
                 Solvias AG<br>
                 Römerpark 2<br>
                 4303 Kaiseraugst<br>
                 Schweiz
 
-                <table class="contact-table text-10">
-                    <tr>
+                <table class="contact-table text-10" style="margin-top: 13mm;"> <tr>
                         <td class="label-col">Kontakt</td>
                         <td class="value-col">Dino Iannucci</td>
                     </tr>
