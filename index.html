@@ -18,30 +18,38 @@
             height: 297mm;
             background: white;
             margin: 10mm auto;
-            position: relative; /* Wichtig für absolute Positionierung der Blöcke */
+            position: relative;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            padding: 0; /* Wir positionieren alles präzise über mm-Angaben */
+            padding: 0;
         }
 
-        /* SCHRIFTEN */
-        .text-10 { font-size: 10pt; line-height: 1.2; }
-        .text-12 { font-size: 12pt; font-weight: bold; line-height: 1.2; }
+        /* SCHRIFTEN - Wie gewünscht: Arial 12/10, nicht fett */
+        .text-10 { 
+            font-size: 10pt; 
+            line-height: 1.1; 
+            font-weight: normal; 
+        }
+        .text-12 { 
+            font-size: 12pt; 
+            line-height: 1.1; 
+            font-weight: normal; /* "Dünne" Schrift statt fett */
+        }
 
         /* ZONE 1: HEADER (Oben) */
         .header-left-block {
             position: absolute;
             top: 15mm;
             left: 15mm;
-            width: 70mm; /* Die rote "7" aus deinem Screenshot */
+            width: 70mm; /* Breite des Textblocks links */
         }
 
         .barcode-pos {
             position: absolute;
             top: 15mm;
-            left: 106mm; /* Berechnet aus 70mm + 21mm Gap + margin */
+            left: 82mm; /* EXAKT 8,2 cm vom linken Rand */
             height: 18mm;
-            width: 50mm;
-            background: #000; /* Platzhalter Barcode */
+            width: 55mm; /* Platz für den Barcode */
+            background: #000;
         }
 
         .roche-logo-pos {
@@ -50,10 +58,10 @@
             right: 15mm;
         }
 
-        /* ZONE 1: ADRESSEN (Ab 8,2 cm) */
+        /* ZONE 1: ADRESSEN (Vertikaler Abstand 8,2 cm von oben) */
         .address-section {
             position: absolute;
-            top: 82mm; /* Die rote "8,2" aus deinem Screenshot */
+            top: 82mm; 
             left: 0;
             width: 100%;
         }
@@ -66,32 +74,26 @@
 
         .spediteur-block {
             position: absolute;
-            left: 108mm; /* Die blaue "10,8" aus deinem Screenshot */
+            left: 108mm; /* 10,8 cm von links */
             width: 85mm;
         }
 
         /* KONTAKT-TABELLEN */
         .contact-table {
             border-collapse: collapse;
-            margin-top: 8mm;
+            margin-top: 6mm;
             width: 100%;
         }
 
         .contact-table td {
-            padding-bottom: 5mm; /* 0,5 cm vertikaler Abstand zwischen den Zeilen */
+            padding-bottom: 5mm; /* 0,5 cm vertikaler Abstand */
             vertical-align: top;
         }
 
-        .label-col { 
-            width: 25mm; /* 2,5 cm Spaltenbreite */
-        }
+        .label-col { width: 25mm; }
+        .value-col { width: 70mm; }
 
-        .value-col { 
-            width: 70mm; /* 7,0 cm Spaltenbreite */
-        }
-
-        /* Hilfsklasse für Fettdruck in Adressen */
-        .addr-title { font-weight: bold; margin-bottom: 2mm; display: block; }
+        .section-label { font-weight: bold; display: block; margin-bottom: 1mm; }
 
         @media print {
             body { background: white; }
@@ -107,14 +109,14 @@
         <div class="header-left-block">
             <div class="text-12">Abholschein 1100008922</div>
             <div class="text-12">Transport Unit</div>
-            <div class="text-10">(Version 3.0)</div>
+            <div class="text-10" style="margin-top: 1mm;">(Version 3.0)</div>
         </div>
 
         <div class="barcode-pos"></div>
 
         <div class="roche-logo-pos">
-            <svg width="32mm" viewBox="0 0 100 50">
-                <path d="M10,25 L30,5 L70,5 L90,25 L70,45 L30,45 Z" fill="none" stroke="#0066cc" stroke-width="2.5"/>
+            <svg width="30mm" viewBox="0 0 100 50">
+                <path d="M10,25 L30,5 L70,5 L90,25 L70,45 L30,45 Z" fill="none" stroke="#0066cc" stroke-width="2"/>
                 <text x="50" y="32" font-family="Arial" font-size="16" fill="#0066cc" text-anchor="middle" font-weight="bold">Roche</text>
             </svg>
         </div>
@@ -122,7 +124,7 @@
         <div class="address-section">
             
             <div class="auftraggeber-block text-10">
-                <span class="addr-title">Auftraggeber</span>
+                <span class="section-label">Auftraggeber</span>
                 F. Hoffmann-La Roche AG<br>
                 Yard Basel<br>
                 : 092 / O2732.01<br>
@@ -131,44 +133,24 @@
                 Schweiz
 
                 <table class="contact-table text-10">
-                    <tr>
-                        <td class="label-col">Kontakt</td>
-                        <td class="value-col">Véronique Escalin</td>
-                    </tr>
-                    <tr>
-                        <td class="label-col">Telefon</td>
-                        <td class="value-col">+41 (61) 687 27 66</td>
-                    </tr>
-                    <tr>
-                        <td class="label-col">E-Mail</td>
-                        <td class="value-col">veronique.escalin@roche.com</td>
-                    </tr>
-                    <tr>
-                        <td class="label-col">Datum</td>
-                        <td class="value-col">30.03.2026</td>
-                    </tr>
+                    <tr><td class="label-col">Kontakt</td><td class="value-col">Véronique Escalin</td></tr>
+                    <tr><td class="label-col">Telefon</td><td class="value-col">+41 (61) 687 27 66</td></tr>
+                    <tr><td class="label-col">E-Mail</td><td class="value-col">veronique.escalin@roche.com</td></tr>
+                    <tr><td class="label-col">Datum</td><td class="value-col">30.03.2026</td></tr>
                 </table>
             </div>
 
             <div class="spediteur-block text-10">
-                <span class="addr-title">Spediteur</span>
+                <span class="section-label">Spediteur</span>
                 Solvias AG<br>
                 Römerpark 2<br>
                 4303 Kaiseraugst<br>
                 Schweiz
 
-                <table class="contact-table text-10" style="margin-top: 13mm;"> <tr>
-                        <td class="label-col">Kontakt</td>
-                        <td class="value-col">Dino Iannucci</td>
-                    </tr>
-                    <tr>
-                        <td class="label-col">Telefon</td>
-                        <td class="value-col">+41618456214</td>
-                    </tr>
-                    <tr>
-                        <td class="label-col">E-Mail</td>
-                        <td class="value-col">dino.iannucci@solvias.com</td>
-                    </tr>
+                <table class="contact-table text-10" style="margin-top: 13.5mm;">
+                    <tr><td class="label-col">Kontakt</td><td class="value-col">Dino Iannucci</td></tr>
+                    <tr><td class="label-col">Telefon</td><td class="value-col">+41618456214</td></tr>
+                    <tr><td class="label-col">E-Mail</td><td class="value-col">dino.iannucci@solvias.com</td></tr>
                 </table>
             </div>
 
