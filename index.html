@@ -23,29 +23,30 @@
             padding: 0;
         }
 
-        /* SCHRIFTEN */
+        /* SCHRIFTEN - Arial 12/10, "dünn" */
         .text-10 { font-size: 10pt; line-height: 1.2; font-weight: normal; }
         .text-12 { font-size: 12pt; line-height: 1.2; font-weight: normal; }
 
-        /* ZONE 1: HEADER (Oben) */
+        /* ZONE 1: HEADER ELEMENTE */
+        /* Berechnung: 82mm (Adress-Top) - 18mm (Lücke) = 64mm (Barcode Ende). 
+           Barcode Höhe 13mm -> Barcode Start bei 51mm von oben. */
+        
         .header-left-block {
             position: absolute;
-            top: 15mm;
+            top: 51mm;
             left: 15mm;
             width: 70mm;
         }
 
-        /* Barcode: 18mm hoch, startet 8,2 cm von links */
         .barcode-area {
             position: absolute;
-            top: 15mm;
-            left: 82mm; 
-            height: 18mm;
+            top: 51mm;
+            left: 82mm; /* 8,2 cm von links */
+            height: 13mm; /* 1,3 cm hoch */
             width: 60mm;
             overflow: hidden;
         }
 
-        /* Cleaner Barcode-Look ohne Nummer */
         .barcode-svg {
             width: 100%;
             height: 100%;
@@ -53,16 +54,16 @@
 
         .roche-logo-pos {
             position: absolute;
-            top: 15mm;
-            right: 15mm;
+            top: 51mm;
+            right: 5mm; /* 0,5 cm von rechts */
+            width: 20mm; /* 2 cm lang */
+            height: 10mm; /* 1 cm hoch */
         }
 
-        /* ADRESS-SECTION: Startet 1,8 cm unter dem Barcode */
-        /* Barcode-Unterkante liegt bei 15mm (top) + 18mm (height) = 33mm. 
-           Plus 18mm Abstand = 51mm. */
+        /* ADRESS-SECTION: Startet exakt 8,2 cm von oben */
         .address-section {
             position: absolute;
-            top: 51mm; 
+            top: 82mm; 
             left: 0;
             width: 100%;
         }
@@ -95,7 +96,7 @@
         .label-col { width: 25mm; } 
         .value-col { width: 70mm; }
 
-        /* Spezifischer Abstand für das Datum: 0,5 cm */
+        /* Abstand Email zu Datum: 0,5 cm */
         .datum-row td {
             padding-top: 5mm; 
         }
@@ -157,14 +158,13 @@
         </div>
 
         <div class="roche-logo-pos">
-            <svg width="32mm" height="16mm" viewBox="0 0 100 52">
-                <polygon points="25,2 75,2 98,26 75,50 25,50 2,26" fill="none" stroke="#0066CC" stroke-width="2.5"/>
-                <text x="50" y="34" font-family="Arial" font-weight="bold" font-size="19" fill="#0066CC" text-anchor="middle">Roche</text>
+            <svg width="20mm" height="10mm" viewBox="0 0 100 52">
+                <polygon points="25,2 75,2 98,26 75,50 25,50 2,26" fill="none" stroke="#0066CC" stroke-width="3"/>
+                <text x="50" y="34" font-family="Arial" font-weight="bold" font-size="20" fill="#0066CC" text-anchor="middle">Roche</text>
             </svg>
         </div>
 
         <div class="address-section">
-            
             <div class="auftraggeber-block text-10">
                 <span class="section-label">Auftraggeber</span>
                 F. Hoffmann-La Roche AG<br>
@@ -198,7 +198,6 @@
                     <tr><td class="label-col">E-Mail</td><td class="value-col">dino.iannucci@solvias.com</td></tr>
                 </table>
             </div>
-
         </div>
     </div>
 </body>
