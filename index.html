@@ -95,6 +95,33 @@
 
         .section-label { font-weight: bold; display: block; margin-bottom: 2mm; }
 
+        /* ZONE 2: NEUE TABELLE */
+        .matrix-container {
+            position: absolute;
+            top: 101mm; /* Berechnet: 0,5 cm unter dem Textfeld */
+            left: 12mm; /* 1,2 cm von links */
+            width: 190mm; /* 19 cm Gesamtbreite */
+        }
+
+        .matrix-table {
+            width: 190mm;
+            border-collapse: collapse;
+            table-layout: fixed; /* Wichtig für exakte Spaltenbreiten */
+            border: 0.5pt solid black;
+        }
+
+        .matrix-table td {
+            border: 0.5pt solid black;
+            padding: 0 1.5mm;
+            height: 5mm; /* 0,5 cm Höhe */
+            vertical-align: middle;
+            font-size: 8.5pt;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .m-label { font-weight: bold; margin-right: 1mm; }
+
         @media print {
             body { background: white; }
             .a4-page { margin: 0; box-shadow: none; }
@@ -169,6 +196,18 @@
                 </table>
             </div>
         </div>
+
+        <div class="matrix-container">
+            <table class="matrix-table">
+                <tr>
+                    <td style="width: 54mm;"><span class="m-label">Freight Unit</span> 4100171488</td>
+                    <td style="width: 42mm;"><span class="m-label">Anzahl Packstücke</span> 1</td>
+                    <td style="width: 47mm;"><span class="m-label">Gewicht brutto</span> 14,000 kg</td>
+                    <td style="width: 47mm;"><span class="m-label">Volumen</span> 0.0 m3</td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 </body>
 </html>
