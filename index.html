@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Roche Abholschein Cockpit - Stable Print</title>
+    <title>Roche Abholschein Cockpit - Print Ready</title>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     
     <style>
@@ -31,59 +31,42 @@
 
         #document-wrapper { margin-left: 400px; }
 
-        /* --- PRINT ENGINE --- */
+        /* --- PRINT ENGINE (HEADER/FOOTER REPEATING) --- */
         * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; }
         body { margin: 0; padding: 0; background-color: #f0f2f5; font-family: Arial, Helvetica, sans-serif; }
 
-        .print-table { 
-            width: 210mm; 
-            border-collapse: collapse; 
-            table-layout: fixed; 
-            margin: 10mm auto; 
-            background: white; 
-            box-shadow: 0 0 15px rgba(0,0,0,0.2); 
-        }
+        .print-table { width: 210mm; border-collapse: collapse; table-layout: fixed; margin: 10mm auto; background: white; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
         
+        /* Die Magie: thead und tfoot wiederholen sich auf jeder Seite */
         thead { display: table-header-group; }
         tfoot { display: table-footer-group; }
 
+        /* Seitenformatierung */
         @page { size: A4; margin: 0; }
         @media print {
             #cockpit { display: none !important; }
             #document-wrapper { margin-left: 0 !important; }
             body { background: white; }
-            .print-table { margin: 0; box-shadow: none; border: none; width: 210mm; }
+            .print-table { margin: 0; box-shadow: none; border: none; }
         }
 
-        /* --- ZONE 1: HEADER (Fixe Höhe 43mm bis Adressstart) --- */
-        .zone-header { height: 43mm; position: relative; width: 100%; }
+        /* --- DESIGN ELEMENTE (EXAKT WIE VORHER) --- */
+        .zone-header { height: 40mm; position: relative; width: 100%; }
         .header-left-block { position: absolute; top: 12mm; left: 15mm; width: 70mm; }
         .barcode-area { position: absolute; top: 12mm; left: 82mm; height: 13mm; width: 60mm; }
         #barcode-output { width: 100%; height: 13mm; }
         .roche-logo-pos { position: absolute; top: 12mm; right: 5mm; width: 20mm; height: 10mm; }
 
-        /* --- ZONE: ADRESSEN (Stabilisiert) --- */
-        .zone-address { height: 75mm; position: relative; width: 100%; }
+        .zone-address { height: 79mm; position: relative; width: 100%; }
         .auftraggeber-block { position: absolute; top: 0; left: 15mm; width: 85mm; font-size: 10pt; }
         .spediteur-block { position: absolute; top: 0; left: 108mm; width: 85mm; font-size: 10pt; }
         .contact-table { border-collapse: collapse; margin-top: 10mm; width: 100%; }
         .contact-table td { padding: 0; vertical-align: top; line-height: 1.2; font-size: 10pt; }
-        
-        /* Die Textzeile mit genau 5mm Abstand nach unten zur Tabelle */
-        .freight-unit-text { 
-            position: absolute;
-            bottom: 5mm; /* Abstand zur Unterkante der Zone = Abstand zur Tabelle */
-            left: 15mm;
-            width: 100%; 
-            font-weight: normal; 
-            white-space: nowrap; 
-            font-size: 10pt; 
-        }
+        .freight-unit-text { margin-top: 5mm; width: 100%; font-weight: normal; white-space: nowrap; font-size: 10pt; }
         .section-label { font-weight: bold; display: block; margin-bottom: 2mm; }
 
-        /* --- ZONE: DYNAMISCHE TABELLEN --- */
         .zone-dynamic { padding: 0 12mm; width: 210mm; }
-        .shipment-block { margin-bottom: 8mm; page-break-inside: avoid; break-inside: avoid; }
+        .shipment-block { margin-bottom: 10mm; page-break-inside: avoid; break-inside: avoid; }
 
         .matrix-table { width: 190mm; border-collapse: collapse; table-layout: fixed; border: 0.5pt solid black; }
         .matrix-table td { border: 0.5pt solid black; padding: 0 1.5mm; height: 5mm; vertical-align: middle; font-size: 8pt; }
@@ -98,16 +81,14 @@
         .inner-list-table td { border: none !important; height: auto !important; padding: 0.2mm 0 !important; font-size: 7.5pt !important; }
         .inner-label { font-weight: bold; width: 30mm; display: inline-block; }
 
-        /* --- ZONE 3: BESTÄTIGUNG --- */
         .confirmation-zone { page-break-inside: avoid; break-inside: avoid; margin-top: 5mm; }
         .confirmation-label { font-size: 8pt; margin-bottom: 2mm; }
         .confirmation-table { width: 190mm; border-collapse: collapse; table-layout: fixed; border: 0.5pt solid black; }
         .confirmation-table td { border: 0.5pt solid black; height: 19mm; padding: 1mm 1.5mm; vertical-align: top; font-size: 8pt; }
         .line-placeholder { margin-top: 8mm; text-align: center; }
 
-        /* --- ZONE 4: FOOTER --- */
         .footer-zone { height: 32mm; width: 100%; position: relative; }
-        .footer-content { position: absolute; bottom: 0; left: 13mm; width: 188mm; display: flex; font-size: 8pt; line-height: 1.2; padding-bottom: 8mm; }
+        .footer-content { position: absolute; bottom: 0; left: 13mm; width: 188mm; display: flex; font-size: 8pt; line-height: 1.2; padding-bottom: 5mm; }
         .f-col-1 { width: 50mm; } .f-col-2 { width: 37mm; } .f-col-3 { width: 87mm; } .f-col-4 { width: 14mm; text-align: right; }
     </style>
 </head>
@@ -133,8 +114,8 @@
                 <td>
                     <div class="zone-header">
                         <div class="header-left-block">
-                            <div class="text-12">Abholschein <span id="out-no">1100008922</span></div>
-                            <div class="text-12">Transport Unit</div>
+                            <div class="text-12" style="font-weight: normal;">Abholschein <span id="out-no">1100008922</span></div>
+                            <div class="text-12" style="font-weight: normal;">Transport Unit</div>
                             <div style="font-size: 10pt; margin-top: 1mm;">(Version 3.0)</div>
                         </div>
                         <div class="barcode-area"><svg id="barcode-output"></svg></div>
