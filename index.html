@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Roche Abholschein - Full Control Cockpit</title>
+    <title>Roche Abholschein - Komplett-Cockpit</title>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     
     <style>
@@ -103,22 +103,17 @@
 
     <h3>Kopfdaten & Datum</h3>
     <div class="input-group"><label>Abholschein Nr. (Barcode)</label><input type="text" id="in-no" value="1100008922" oninput="updateDoc()"></div>
-    <div class="input-group"><label>Dokumenten-Datum</label><input type="text" id="in-doc-date" value="30.03.2026" oninput="updateDoc()"></div>
+    <div class="input-group"><label>Dokumenten-Datum (oben links)</label><input type="text" id="in-doc-date" value="30.03.2026" oninput="updateDoc()"></div>
 
-    <h3>Auftraggeber</h3>
-    <div class="input-group"><label>Firma & Adresse</label><textarea id="in-client-addr" rows="3" oninput="updateDoc()">F. Hoffmann-La Roche AG, Yard Basel
+    <h3>Haupt-Adressen (Zone 1)</h3>
+    <div class="input-group"><label>Auftraggeber Firma</label><textarea id="in-client-addr" rows="3" oninput="updateDoc()">F. Hoffmann-La Roche AG, Yard Basel
 : 092 / O2732.01, Grenzacherstr. 124
 4070 Basel, Schweiz</textarea></div>
-    <div class="input-group"><label>Kontakt Person</label><input type="text" id="in-client-cont" value="Véronique Escalin" oninput="updateDoc()"></div>
-    <div class="input-group"><label>Telefon</label><input type="text" id="in-client-tel" value="+41 (61) 687 27 66" oninput="updateDoc()"></div>
-    <div class="input-group"><label>E-Mail</label><input type="text" id="in-client-mail" value="veronique.escalin@roche.com" oninput="updateDoc()"></div>
-
-    <h3>Spediteur</h3>
-    <div class="input-group"><label>Firma & Adresse</label><textarea id="in-fwd-addr" rows="2" oninput="updateDoc()">Solvias AG, Römerpark 2
-4303 Kaiseraugst, Schweiz</textarea></div>
-    <div class="input-group"><label>Kontakt Person</label><input type="text" id="in-fwd-cont" value="Dino Iannucci" oninput="updateDoc()"></div>
-    <div class="input-group"><label>Telefon</label><input type="text" id="in-fwd-tel" value="+41618456214" oninput="updateDoc()"></div>
-    <div class="input-group"><label>E-Mail</label><input type="text" id="in-fwd-mail" value="dino.iannucci@solvias.com" oninput="updateDoc()"></div>
+    <div class="input-group"><label>Kontakt / Tel / Mail</label>
+        <input type="text" id="in-client-cont" value="Véronique Escalin" oninput="updateDoc()">
+        <input type="text" id="in-client-tel" value="+41 (61) 687 27 66" oninput="updateDoc()" style="margin-top:3px;">
+        <input type="text" id="in-client-mail" value="veronique.escalin@roche.com" oninput="updateDoc()" style="margin-top:3px;">
+    </div>
 
     <h3>Sendungen (Zone 2)</h3>
     <div id="shipment-inputs-container"></div>
@@ -165,11 +160,11 @@
                             </div>
                             <div class="addr-right">
                                 <span style="font-weight:bold; font-size:10pt; display:block; margin-bottom:2mm;">Spediteur</span>
-                                <span id="out-fwd-addr" style="font-size:10pt;"></span>
+                                <span style="font-size:10pt;">Solvias AG<br>Römerpark 2<br>4303 Kaiseraugst, Schweiz</span>
                                 <table class="contact-table">
-                                    <tr><td style="width: 25mm;">Kontakt</td><td id="out-fwd-cont"></td></tr>
-                                    <tr><td>Telefon</td><td id="out-fwd-tel"></td></tr>
-                                    <tr><td>E-Mail</td><td id="out-fwd-mail"></td></tr>
+                                    <tr><td style="width: 25mm;">Kontakt</td><td>Dino Iannucci</td></tr>
+                                    <tr><td>Telefon</td><td>+41618456214</td></tr>
+                                    <tr><td>E-Mail</td><td>dino.iannucci@solvias.com</td></tr>
                                 </table>
                             </div>
                         </div>
@@ -220,12 +215,11 @@
 </div>
 
 <script>
-    // Alle Datenfelder einer Sendung
     let shipments = [{
         fu: "4100171488", pack: "1", weight: "14,000 kg", vol: "0.0 m3",
-        pickup: "F. Hoffmann-La Roche Ltd, Site Logistics, Basel",
-        recipient: "Solvias AG, Kaiseraugst",
-        fwd_type: "Kurier", pickup_date: "30.03.2026", delivery_date: "30.03.2026",
+        pickup_addr: "F. Hoffmann-La Roche Ltd, Site Logistics, Basel",
+        recipient_addr: "Solvias AG, Kaiseraugst",
+        forwarding: "Kurier", pickup_date: "30.03.2026", delivery_date: "30.03.2026",
         incoterms: "CPT KAISERAUGST", attachments: "Gemäss Speditionsauftrag",
         mark: "376401357901165903", packdims: "Temperaturgeführte Verpackung",
         descr: "Solvias 33521\n1 Bag mit 1 Tube\nInhalt: Batch: STF25-2603ET01_M3-2"
@@ -241,25 +235,27 @@
         shipments.forEach((s, i) => {
             container.innerHTML += `
                 <div class="shipment-input-block">
-                    <button class="remove-btn" onclick="removeShipment(${i})">X</button>
+                    <button class="remove-btn" onclick="removeShipment(${i})">Löschen</button>
                     <div class="input-group"><label>Freight Unit Nr.</label><input type="text" value="${s.fu}" oninput="updateData(${i}, 'fu', this.value)"></div>
-                    <div class="input-group"><label>Packstücke / Gewicht / Volumen</label>
-                        <div style="display:flex; gap:5px;">
-                            <input type="text" value="${s.pack}" oninput="updateData(${i}, 'pack', this.value)">
-                            <input type="text" value="${s.weight}" oninput="updateData(${i}, 'weight', this.value)">
-                            <input type="text" value="${s.vol}" oninput="updateData(${i}, 'vol', this.value)">
-                        </div>
+                    <div class="input-group"><label>Abholadresse (in Tabelle)</label><textarea rows="2" oninput="updateData(${i}, 'pickup_addr', this.value)">${s.pickup_addr}</textarea></div>
+                    <div class="input-group"><label>Warenempfänger (in Tabelle)</label><textarea rows="2" oninput="updateData(${i}, 'recipient_addr', this.value)">${s.recipient_addr}</textarea></div>
+                    
+                    <div class="input-group"><label>Logistik (Fwd / Abholung / Lieferung)</label>
+                        <input type="text" value="${s.forwarding}" oninput="updateData(${i}, 'forwarding', this.value)" placeholder="Weiterleitung">
+                        <input type="text" value="${s.pickup_date}" oninput="updateData(${i}, 'pickup_date', this.value)" placeholder="Abholtermin" style="margin-top:2px;">
+                        <input type="text" value="${s.delivery_date}" oninput="updateData(${i}, 'delivery_date', this.value)" placeholder="Liefertermin" style="margin-top:2px;">
                     </div>
-                    <div class="input-group"><label>Warenbeschreibung</label><textarea rows="3" oninput="updateData(${i}, 'descr', this.value)">${s.descr}</textarea></div>
-                    <div class="input-group"><label>Markierung / Verpackung</label>
-                        <input type="text" value="${s.mark}" oninput="updateData(${i}, 'mark', this.value)">
-                        <input type="text" value="${s.packdims}" oninput="updateData(${i}, 'packdims', this.value)" style="margin-top:3px;">
+
+                    <div class="input-group"><label>Incoterms / Beilagen</label>
+                        <input type="text" value="${s.incoterms}" oninput="updateData(${i}, 'incoterms', this.value)">
+                        <input type="text" value="${s.attachments}" oninput="updateData(${i}, 'attachments', this.value)" style="margin-top:2px;">
                     </div>
-                    <div class="input-group"><label>Termine (Abholung / Lieferung)</label>
-                        <div style="display:flex; gap:5px;">
-                            <input type="text" value="${s.pickup_date}" oninput="updateData(${i}, 'pickup_date', this.value)">
-                            <input type="text" value="${s.delivery_date}" oninput="updateData(${i}, 'delivery_date', this.value)">
-                        </div>
+
+                    <div class="input-group"><label>Warenzeile (Mark. / Pack. / Beschr. / Gew.)</label>
+                        <input type="text" value="${s.mark}" oninput="updateData(${i}, 'mark', this.value)" placeholder="Markierung">
+                        <input type="text" value="${s.packdims}" oninput="updateData(${i}, 'packdims', this.value)" placeholder="Verpackung" style="margin-top:2px;">
+                        <textarea rows="2" oninput="updateData(${i}, 'descr', this.value)" style="margin-top:2px;">${s.descr}</textarea>
+                        <input type="text" value="${s.weight}" oninput="updateData(${i}, 'weight', this.value)" placeholder="Gewicht" style="margin-top:2px;">
                     </div>
                 </div>`;
         });
@@ -270,21 +266,15 @@
         const setOut = (id, val) => document.getElementById('out-' + id).innerText = val;
         const setHtml = (id, val) => document.getElementById('out-' + id).innerHTML = val.replace(/\n/g, '<br>');
 
-        // Global
         setOut('no', getIn('no'));
         setOut('doc-date', getIn('doc-date'));
         setHtml('client-addr', getIn('client-addr'));
         setOut('client-cont', getIn('client-cont'));
         setOut('client-tel', getIn('client-tel'));
         setOut('client-mail', getIn('client-mail'));
-        setHtml('fwd-addr', getIn('fwd-addr'));
-        setOut('fwd-cont', getIn('fwd-cont'));
-        setOut('fwd-tel', getIn('fwd-tel'));
-        setOut('fwd-mail', getIn('fwd-mail'));
 
         JsBarcode("#barcode-output", getIn('no'), { format: "CODE128", width: 2, height: 40, displayValue: false, margin: 0 });
 
-        // Sendungen
         const container = document.getElementById('shipments-container');
         container.innerHTML = '';
         shipments.forEach(s => {
@@ -295,11 +285,11 @@
                     </table>
                     <table class="matrix-table-second">
                         <tr>
-                            <td style="width: 45mm;"><span style="font-weight:bold; display:block; margin-bottom:1mm;">Abholadresse</span>${s.pickup}</td>
-                            <td style="width: 45mm;"><span style="font-weight:bold; display:block; margin-bottom:1mm;">Warenempfänger</span>${s.recipient}</td>
+                            <td style="width: 45mm;"><span style="font-weight:bold; display:block; margin-bottom:1mm;">Abholadresse</span>${s.pickup_addr.replace(/\n/g, '<br>')}</td>
+                            <td style="width: 45mm;"><span style="font-weight:bold; display:block; margin-bottom:1mm;">Warenempfänger</span>${s.recipient_addr.replace(/\n/g, '<br>')}</td>
                             <td style="width: 100mm;">
                                 <table class="inner-list-table">
-                                    <tr><td><span class="inner-label">Zur Weiterleitung</span> ${s.fwd_type}</td></tr>
+                                    <tr><td><span class="inner-label">Zur Weiterleitung</span> ${s.forwarding}</td></tr>
                                     <tr><td><span class="inner-label">Abholtermin</span> ${s.pickup_date}</td></tr>
                                     <tr><td><span class="inner-label">Liefertermin</span> ${s.delivery_date}</td></tr>
                                     <tr><td><span class="inner-label">Incoterms</span> ${s.incoterms}</td></tr>
