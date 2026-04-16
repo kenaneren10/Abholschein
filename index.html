@@ -2,72 +2,69 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Roche Abholschein Cockpit - Print Ready</title>
+    <title>Roche Abholschein - Professional Cockpit</title>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     
     <style>
-        /* --- COCKPIT STYLING (Nur Bildschirm) --- */
+        /* --- CSS FÜR DAS COCKPIT (Nur Bildschirm) --- */
         #cockpit {
-            position: fixed;
-            left: 0; top: 0;
-            width: 400px; height: 100vh;
-            background: #f1f3f4;
-            border-right: 2px solid #0066CC;
-            padding: 15px;
-            overflow-y: auto;
-            z-index: 9999;
-            font-family: sans-serif;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+            position: fixed; left: 0; top: 0; width: 400px; height: 100vh;
+            background: #f1f3f4; border-right: 2px solid #0066CC; padding: 15px;
+            overflow-y: auto; z-index: 9999; font-family: sans-serif; box-shadow: 5px 0 15px rgba(0,0,0,0.2);
         }
-        #cockpit h2 { color: #0066CC; font-size: 16px; border-bottom: 2px solid #0066CC; padding-bottom: 8px; margin-bottom: 15px; }
-        #cockpit h3 { font-size: 12px; text-transform: uppercase; color: #666; margin-top: 20px; border-left: 3px solid #0066CC; padding-left: 8px; margin-bottom: 10px; }
+        #cockpit h2 { color: #0066CC; font-size: 16px; border-bottom: 2px solid #0066CC; padding-bottom: 8px; }
+        #cockpit h3 { font-size: 12px; text-transform: uppercase; color: #666; margin-top: 20px; border-left: 3px solid #0066CC; padding-left: 8px; }
         .shipment-input-block { background: #fff; border: 1px solid #ddd; padding: 10px; margin-bottom: 15px; border-radius: 4px; position: relative; }
-        .remove-btn { position: absolute; right: 5px; top: 5px; background: #ff4444; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 10px; padding: 2px 5px; }
+        .remove-btn { position: absolute; right: 5px; top: 5px; background: #ff4444; color: white; border: none; border-radius: 3px; cursor: pointer; padding: 2px 5px; font-size: 10px; }
         .input-group { margin-bottom: 8px; }
-        .input-group label { display: block; font-size: 9px; font-weight: bold; color: #444; margin-bottom: 2px; }
+        .input-group label { display: block; font-size: 9px; font-weight: bold; margin-bottom: 2px; }
         .input-group input, .input-group textarea { width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px; font-size: 11px; }
-        .add-btn { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+        .add-btn { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
         .print-btn { width: 100%; padding: 12px; background: #0066CC; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
         #document-wrapper { margin-left: 400px; }
 
-        /* --- PRINT ENGINE (HEADER/FOOTER REPEATING) --- */
+        /* --- STRENGES DESIGN-GERÜST FÜR DEN DRUCK --- */
         * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; }
         body { margin: 0; padding: 0; background-color: #f0f2f5; font-family: Arial, Helvetica, sans-serif; }
 
-        .print-table { width: 210mm; border-collapse: collapse; table-layout: fixed; margin: 10mm auto; background: white; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
-        
-        /* Die Magie: thead und tfoot wiederholen sich auf jeder Seite */
+        .print-table {
+            width: 210mm; border-collapse: collapse; margin: 10mm auto;
+            background: white; box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            table-layout: fixed;
+        }
+
         thead { display: table-header-group; }
         tfoot { display: table-footer-group; }
 
-        /* Seitenformatierung */
-        @page { size: A4; margin: 0; }
-        @media print {
-            #cockpit { display: none !important; }
-            #document-wrapper { margin-left: 0 !important; }
-            body { background: white; }
-            .print-table { margin: 0; box-shadow: none; border: none; }
-        }
+        /* HEADER & FOOTER ABSTÄNDE */
+        .header-spacer { height: 43mm; }
+        .footer-spacer { height: 32mm; }
 
-        /* --- DESIGN ELEMENTE (EXAKT WIE VORHER) --- */
-        .zone-header { height: 40mm; position: relative; width: 100%; }
+        /* HEADER INHALT */
+        .zone-header-inner { position: relative; height: 43mm; width: 210mm; }
         .header-left-block { position: absolute; top: 12mm; left: 15mm; width: 70mm; }
         .barcode-area { position: absolute; top: 12mm; left: 82mm; height: 13mm; width: 60mm; }
         #barcode-output { width: 100%; height: 13mm; }
         .roche-logo-pos { position: absolute; top: 12mm; right: 5mm; width: 20mm; height: 10mm; }
 
-        .zone-address { height: 79mm; position: relative; width: 100%; }
-        .auftraggeber-block { position: absolute; top: 0; left: 15mm; width: 85mm; font-size: 10pt; }
-        .spediteur-block { position: absolute; top: 0; left: 108mm; width: 85mm; font-size: 10pt; }
-        .contact-table { border-collapse: collapse; margin-top: 10mm; width: 100%; }
+        /* ADRESS- & DYNAMIK-BEREICH */
+        .page-content { padding: 0 12mm; width: 210mm; }
+        .address-grid { display: flex; margin-top: 3mm; position: relative; height: 60mm; }
+        .addr-left { width: 93mm; padding-left: 3mm; }
+        .addr-right { width: 97mm; padding-left: 10mm; }
+
+        .contact-table { border-collapse: collapse; margin-top: 8mm; width: 100%; }
         .contact-table td { padding: 0; vertical-align: top; line-height: 1.2; font-size: 10pt; }
-        .freight-unit-text { margin-top: 5mm; width: 100%; font-weight: normal; white-space: nowrap; font-size: 10pt; }
-        .section-label { font-weight: bold; display: block; margin-bottom: 2mm; }
+        
+        .freight-unit-text { 
+            margin-top: 6mm; /* Erzeugt den optischen Abstand zu den Tabellen */
+            margin-bottom: 5mm; /* EXAKT 5mm ABSTAND WIE GEWÜNSCHT */
+            font-size: 10pt; padding-left: 3mm; 
+        }
 
-        .zone-dynamic { padding: 0 12mm; width: 210mm; }
-        .shipment-block { margin-bottom: 10mm; page-break-inside: avoid; break-inside: avoid; }
-
+        /* TABELLEN DESIGN (Pixelgenau wie zuvor) */
+        .shipment-block { margin-bottom: 8mm; break-inside: avoid; page-break-inside: avoid; }
         .matrix-table { width: 190mm; border-collapse: collapse; table-layout: fixed; border: 0.5pt solid black; }
         .matrix-table td { border: 0.5pt solid black; padding: 0 1.5mm; height: 5mm; vertical-align: middle; font-size: 8pt; }
         .matrix-table-second { width: 190mm; border-collapse: collapse; table-layout: fixed; border: 0.5pt solid black; border-top: none; }
@@ -81,15 +78,21 @@
         .inner-list-table td { border: none !important; height: auto !important; padding: 0.2mm 0 !important; font-size: 7.5pt !important; }
         .inner-label { font-weight: bold; width: 30mm; display: inline-block; }
 
-        .confirmation-zone { page-break-inside: avoid; break-inside: avoid; margin-top: 5mm; }
-        .confirmation-label { font-size: 8pt; margin-bottom: 2mm; }
+        .confirmation-zone { break-inside: avoid; margin-top: 5mm; }
         .confirmation-table { width: 190mm; border-collapse: collapse; table-layout: fixed; border: 0.5pt solid black; }
         .confirmation-table td { border: 0.5pt solid black; height: 19mm; padding: 1mm 1.5mm; vertical-align: top; font-size: 8pt; }
-        .line-placeholder { margin-top: 8mm; text-align: center; }
 
-        .footer-zone { height: 32mm; width: 100%; position: relative; }
-        .footer-content { position: absolute; bottom: 0; left: 13mm; width: 188mm; display: flex; font-size: 8pt; line-height: 1.2; padding-bottom: 5mm; }
-        .f-col-1 { width: 50mm; } .f-col-2 { width: 37mm; } .f-col-3 { width: 87mm; } .f-col-4 { width: 14mm; text-align: right; }
+        /* FOOTER INHALT */
+        .footer-inner { position: relative; height: 32mm; width: 210mm; }
+        .footer-content { position: absolute; bottom: 8mm; left: 13mm; width: 188mm; display: flex; font-size: 8pt; line-height: 1.2; }
+
+        @media print {
+            #cockpit { display: none !important; }
+            #document-wrapper { margin-left: 0 !important; }
+            body { background: white; }
+            .print-table { margin: 0; box-shadow: none; border: none; width: 210mm; }
+            @page { size: A4; margin: 0; }
+        }
     </style>
 </head>
 <body>
@@ -112,10 +115,10 @@
         <thead>
             <tr>
                 <td>
-                    <div class="zone-header">
+                    <div class="zone-header-inner">
                         <div class="header-left-block">
-                            <div class="text-12" style="font-weight: normal;">Abholschein <span id="out-no">1100008922</span></div>
-                            <div class="text-12" style="font-weight: normal;">Transport Unit</div>
+                            <div class="text-12">Abholschein <span id="out-no"></span></div>
+                            <div class="text-12">Transport Unit</div>
                             <div style="font-size: 10pt; margin-top: 1mm;">(Version 3.0)</div>
                         </div>
                         <div class="barcode-area"><svg id="barcode-output"></svg></div>
@@ -133,37 +136,38 @@
         <tbody>
             <tr>
                 <td>
-                    <div class="zone-address">
-                        <div class="auftraggeber-block">
-                            <span class="section-label">Auftraggeber</span>
-                            <span id="out-client"></span>
-                            <table class="contact-table">
-                                <tr><td style="width: 25mm;">Kontakt</td><td>Véronique Escalin</td></tr>
-                                <tr><td>Telefon</td><td>+41 (61) 687 27 66</td></tr>
-                                <tr><td>E-Mail</td><td>veronique.escalin@roche.com</td></tr>
-                                <tr style="height: 5mm;"><td style="padding-top: 5mm;">Datum</td><td style="padding-top: 5mm;" id="out-date-top"></td></tr>
-                            </table>
-                            <div class="freight-unit-text">Die Abholung beinhaltet folgende Lieferungen / Freight Units:</div>
+                    <div class="page-content">
+                        <div class="address-grid">
+                            <div class="addr-left">
+                                <span style="font-weight:bold; font-size:10pt; display:block; margin-bottom:2mm;">Auftraggeber</span>
+                                <span id="out-client" style="font-size:10pt;"></span>
+                                <table class="contact-table">
+                                    <tr><td style="width: 25mm;">Kontakt</td><td>Véronique Escalin</td></tr>
+                                    <tr><td>Telefon</td><td>+41 (61) 687 27 66</td></tr>
+                                    <tr><td>E-Mail</td><td>veronique.escalin@roche.com</td></tr>
+                                    <tr style="height:5mm"><td style="padding-top:5mm">Datum</td><td style="padding-top:5mm" id="out-date-top"></td></tr>
+                                </table>
+                            </div>
+                            <div class="addr-right">
+                                <span style="font-weight:bold; font-size:10pt; display:block; margin-bottom:2mm;">Spediteur</span>
+                                <span style="font-size:10pt;">Solvias AG<br>Römerpark 2<br>4303 Kaiseraugst, Schweiz</span>
+                                <table class="contact-table">
+                                    <tr><td style="width: 25mm;">Kontakt</td><td>Dino Iannucci</td></tr>
+                                    <tr><td>Telefon</td><td>+41618456214</td></tr>
+                                    <tr><td>E-Mail</td><td>dino.iannucci@solvias.com</td></tr>
+                                </table>
+                            </div>
                         </div>
-                        <div class="spediteur-block">
-                            <span class="section-label">Spediteur</span>
-                            Solvias AG<br>Römerpark 2<br>4303 Kaiseraugst, Schweiz
-                            <table class="contact-table">
-                                <tr><td style="width: 25mm;">Kontakt</td><td>Dino Iannucci</td></tr>
-                                <tr><td>Telefon</td><td>+41618456214</td></tr>
-                                <tr><td>E-Mail</td><td>dino.iannucci@solvias.com</td></tr>
-                            </table>
-                        </div>
-                    </div>
 
-                    <div class="zone-dynamic">
+                        <div class="freight-unit-text">Die Abholung beinhaltet folgende Lieferungen / Freight Units:</div>
+
                         <div id="shipments-container"></div>
                         
                         <div class="confirmation-zone">
-                            <div class="confirmation-label">Übernahme bestätigt:</div>
+                            <div style="font-size:8pt; margin-bottom:2mm;">Übernahme bestätigt:</div>
                             <table class="confirmation-table">
                                 <tr>
-                                    <td style="width: 95mm;">Übernahme am (Datum DD.MM.YYYY und Uhrzeit HH:MM)<div class="line-placeholder">____ . ____ . ________ &nbsp; / &nbsp; ____ : ____</div></td>
+                                    <td style="width: 95mm;">Übernahme am (Datum DD.MM.YYYY und Uhrzeit HH:MM)<div style="margin-top:8mm; text-align:center;">____ . ____ . ________ &nbsp; / &nbsp; ____ : ____</div></td>
                                     <td style="width: 95mm;">Polizeiliches Kennzeichen (Verladeeinheit)</td>
                                 </tr>
                                 <tr><td>Name des Fahrers (in Blockschrift)</td><td>Unterschrift des Fahrers</td></tr>
@@ -180,18 +184,18 @@
         <tfoot>
             <tr>
                 <td>
-                    <div class="footer-zone">
+                    <div class="footer-inner">
                         <div class="footer-content">
-                            <div class="f-col-1"><b>F. Hoffmann-La Roche AG</b><br>Grenzacherstrasse 124<br>4070 Basel / Schweiz</div>
-                            <div class="f-col-2">Standortlogistik<br>Bau 041 / 3.005</div>
-                            <div class="f-col-3">
-                                <table style="width: 100%; border-collapse: collapse; border: none;">
-                                    <tr><td style="width: 10mm; border: none;">Tel.</td><td style="border: none;">+41 61 688 72 27</td></tr>
-                                    <tr><td style="border: none;">Fax.</td><td style="border: none;">+41 61 688 69 02</td></tr>
-                                    <tr><td style="border: none;">E-Mail:</td><td style="border: none;">basel.site-logistics@roche.com</td></tr>
+                            <div style="width: 50mm;"><b>F. Hoffmann-La Roche AG</b><br>Grenzacherstrasse 124<br>4070 Basel / Schweiz</div>
+                            <div style="width: 37mm;">Standortlogistik<br>Bau 041 / 3.005</div>
+                            <div style="width: 87mm;">
+                                <table style="width:100%; border:none;">
+                                    <tr><td style="width:10mm;">Tel.</td><td>+41 61 688 72 27</td></tr>
+                                    <tr><td>Fax.</td><td>+41 61 688 69 02</td></tr>
+                                    <tr><td>E-Mail:</td><td>basel.site-logistics@roche.com</td></tr>
                                 </table>
                             </div>
-                            <div class="f-col-4">Seite 1 / 1</div>
+                            <div style="width: 14mm; text-align:right;">Seite 1 / 1</div>
                         </div>
                     </div>
                 </td>
@@ -202,17 +206,13 @@
 
 <script>
     let shipments = [{
-        fu: "4100171488", pack: "1", weight: "14,000 kg",
-        pickup: "F. Hoffmann-La Roche Ltd<br>Site Logistics<br>Grenzacherstrasse 124<br>4070 Basel, Schweiz",
-        recipient: "Solvias AG<br>Römerpark 2<br>4303 Kaiseraugst, Schweiz",
-        forwarding: "Kurier", pickupDate: "30.03.2026", deliveryDate: "30.03.2026",
-        incoterms: "CPT KAISERAUGST Incoterms ® 20", attachments: "Gemäss Speditionsauftrag",
-        mark: "376401357901165903", packdims: "Temperaturgeführte Verpackung",
+        fu: "4100171488", weight: "14,000 kg", date: "30.03.2026",
         descr: "Solvias 33521\n1 Bag mit 1 Tube\nInhalt:\nBatch: STF25-2603ET01_M3-2"
     }];
 
     function addShipment() { shipments.push({...shipments[0]}); renderCockpit(); updateDoc(); }
     function removeShipment(i) { if(shipments.length > 1) { shipments.splice(i, 1); renderCockpit(); updateDoc(); } }
+    function updateData(i, f, v) { shipments[i][f] = v; updateDoc(); }
 
     function renderCockpit() {
         const container = document.getElementById('shipment-inputs-container');
@@ -220,7 +220,7 @@
         shipments.forEach((s, i) => {
             container.innerHTML += `
                 <div class="shipment-input-block">
-                    <button class="remove-btn" onclick="removeShipment(${i})">X</button>
+                    <button class="remove-btn" onclick="removeShipment(${i})">Löschen</button>
                     <div class="input-group"><label>Freight Unit</label><input type="text" value="${s.fu}" oninput="updateData(${i}, 'fu', this.value)"></div>
                     <div class="input-group"><label>Gewicht</label><input type="text" value="${s.weight}" oninput="updateData(${i}, 'weight', this.value)"></div>
                     <div class="input-group"><label>Beschreibung</label><textarea rows="3" oninput="updateData(${i}, 'descr', this.value)">${s.descr}</textarea></div>
@@ -228,14 +228,11 @@
         });
     }
 
-    function updateData(index, field, value) { shipments[index][field] = value; updateDoc(); }
-
     function updateDoc() {
-        const no = document.getElementById('in-no').value;
-        document.getElementById('out-no').innerText = no;
+        document.getElementById('out-no').innerText = document.getElementById('in-no').value;
         document.getElementById('out-client').innerHTML = document.getElementById('in-client').value.replace(/\n/g, '<br>');
-        document.getElementById('out-date-top').innerText = shipments[0].pickupDate;
-        JsBarcode("#barcode-output", no, { format: "CODE128", width: 2, height: 40, displayValue: false, margin: 0 });
+        document.getElementById('out-date-top').innerText = shipments[0].date;
+        JsBarcode("#barcode-output", document.getElementById('in-no').value, { format: "CODE128", width: 2, height: 40, displayValue: false, margin: 0 });
 
         const container = document.getElementById('shipments-container');
         container.innerHTML = '';
@@ -243,19 +240,19 @@
             container.innerHTML += `
                 <div class="shipment-block">
                     <table class="matrix-table">
-                        <tr><td style="width: 54mm;"><b>Freight Unit</b> ${s.fu}</td><td style="width: 42mm;"><b>Anzahl Packstücke</b> ${s.pack}</td><td style="width: 47mm;"><b>Gewicht brutto</b> ${s.weight}</td><td style="width: 47mm;"><b>Volumen</b> 0.0 m3</td></tr>
+                        <tr><td style="width: 54mm;"><b>Freight Unit</b> ${s.fu}</td><td style="width: 42mm;"><b>Anzahl Packstücke</b> 1</td><td style="width: 47mm;"><b>Gewicht brutto</b> ${s.weight}</td><td style="width: 47mm;"><b>Volumen</b> 0.0 m3</td></tr>
                     </table>
                     <table class="matrix-table-second">
                         <tr>
-                            <td style="width: 45mm;"><span class="m-label">Abholadresse</span>${s.pickup}</td>
-                            <td style="width: 45mm;"><span class="m-label">Warenempfänger</span>${s.recipient}</td>
+                            <td style="width: 45mm;"><span style="font-weight:bold; display:block; margin-bottom:1mm;">Abholadresse</span>F. Hoffmann-La Roche Ltd, Site Logistics, Basel</td>
+                            <td style="width: 45mm;"><span style="font-weight:bold; display:block; margin-bottom:1mm;">Warenempfänger</span>Solvias AG, Kaiseraugst</td>
                             <td style="width: 100mm;">
                                 <table class="inner-list-table">
-                                    <tr><td><span class="inner-label">Zur Weiterleitung</span> ${s.forwarding}</td></tr>
-                                    <tr><td><span class="inner-label">Abholtermin</span> ${s.pickupDate}</td></tr>
-                                    <tr><td><span class="inner-label">Liefertermin</span> ${s.deliveryDate}</td></tr>
-                                    <tr><td><span class="inner-label">Incoterms</span> ${s.incoterms}</td></tr>
-                                    <tr><td><span class="inner-label">Beilagen</span> ${s.attachments}</td></tr>
+                                    <tr><td><span class="inner-label">Zur Weiterleitung</span> Kurier</td></tr>
+                                    <tr><td><span class="inner-label">Abholtermin</span> ${s.date}</td></tr>
+                                    <tr><td><span class="inner-label">Liefertermin</span> ${s.date}</td></tr>
+                                    <tr><td><span class="inner-label">Incoterms</span> CPT KAISERAUGST</td></tr>
+                                    <tr><td><span class="inner-label">Beilagen</span> Gemäss Speditionsauftrag</td></tr>
                                 </table>
                             </td>
                         </tr>
@@ -264,11 +261,12 @@
                         <tr><td style="width: 35mm;">Markierung</td><td style="width: 40mm;">Verpackung / Dims.</td><td style="width: 93mm;">Warenbeschreibung</td><td style="width: 22mm; text-align: right;">Gewicht brutto</td></tr>
                     </table>
                     <table class="matrix-table-fourth">
-                        <tr><td style="width: 35mm;">${s.mark}</td><td style="width: 40mm;">${s.packdims}</td><td style="width: 93mm;">${s.descr.replace(/\n/g, '<br>')}</td><td style="width: 22mm; text-align: right;">${s.weight}</td></tr>
+                        <tr><td style="width: 35mm;">376401357901</td><td style="width: 40mm;">Temp. Verpackung</td><td style="width: 93mm;">${s.descr.replace(/\n/g, '<br>')}</td><td style="width: 22mm; text-align: right;">${s.weight}</td></tr>
                     </table>
                 </div>`;
         });
     }
+
     window.onload = () => { renderCockpit(); updateDoc(); };
 </script>
 </body>
