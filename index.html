@@ -45,6 +45,7 @@
         .barcode-area { position: absolute; top: 12mm; left: 82mm; height: 13mm; width: 60mm; }
         #barcode-output { width: 100%; height: 13mm; }
         .roche-logo-pos { position: absolute; top: 12mm; right: 5mm; width: 20mm; height: 10mm; }
+        .roche-logo-pos img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
         .page-content { padding: 0 12mm; width: 210mm; }
         .address-grid { display: flex; margin-top: 3mm; position: relative; height: auto; }
@@ -137,10 +138,7 @@
                         </div>
                         <div class="barcode-area"><svg id="barcode-output"></svg></div>
                         <div class="roche-logo-pos">
-                            <svg width="20mm" height="10mm" viewBox="0 0 100 52">
-                                <polygon points="25,2 75,2 98,26 75,50 25,50 2,26" fill="none" stroke="#0066CC" stroke-width="3"/>
-                                <text x="50" y="34" font-family="Arial" font-weight="bold" font-size="20" fill="#0066CC" text-anchor="middle">Roche</text>
-                            </svg>
+                            <img src="roche logo.png" alt="Roche Logo">
                         </div>
                     </div>
                 </td>
